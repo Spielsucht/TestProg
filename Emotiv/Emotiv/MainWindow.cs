@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace Emotiv
 {
@@ -15,15 +14,17 @@ namespace Emotiv
 
         delegate void SetTextCallback(string text);
         private EmoControl control;
+        private BackgroundWorker emoWorker;
+        public delegate void loadProfile(string path);
+        public event loadProfile onLoadProfile;
 
         public MainWindow()
         {
-            control = new EmoControl(this);
-
             InitializeComponent();
+            control = new EmoControl(this);
+            emoWorker = new BackgroundWorker();
 
-            Thread emoControlThread = new Thread(new ThreadStart(control.run));
-            emoControlThread.Start();
+            startEmoControl();
         }
 
         public void setLabelText(string setText)
@@ -39,6 +40,19 @@ namespace Emotiv
             }
         }
 
+        private void startEmoControl()
+        {
+            if (!emoWorker.IsBusy)
+            {
+                emoWorker.DoWork += new DoWorkEventHandler(emoWorker_DoWork);
+                emoWorker.RunWorkerAsync();
+            }
+        }
+        private void emoWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            control.run();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             control.stopRunning();
@@ -47,6 +61,21 @@ namespace Emotiv
         protected override void OnClosing(CancelEventArgs e)
         {
             control.stopRunning();
+            emoWorker.Dispose();
+        }
+
+        private void btSearch_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "Emotiv Pofile (*.emu)|*.emu";
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                if (open.FileName != null)
+                {
+                    tbPofilePath.Text = open.FileName;
+                    this.onLoadProfile(open.FileName);
+                }
+            }
         }
     }
 }
