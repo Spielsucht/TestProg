@@ -39,26 +39,9 @@ namespace Emotiv
 
         private void window_onLoadProfile(string path)
         {
-            try
-            {
-                engine.LoadUserProfile(userID, path);
-                profile = engine.GetUserProfile(userID);
-                engine.SetUserProfile(userID, profile);
-            }
-            catch (EmoEngineException e)
-            {
-                MessageBox.Show(e.Message + "\nBitte Emotiv Dongle überprüfen",
-                    "Fehler beim Profilladen",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message,
-                    "Fehler",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            engine.LoadUserProfile(userID, path);
+            profile = engine.GetUserProfile(userID);
+            engine.SetUserProfile(userID, profile);
         }
 
         private void engine_EmoEngineDisconnected(object sender, EmoEngineEventArgs e)
@@ -131,6 +114,7 @@ namespace Emotiv
         {            
             int currCharge;
             int maxCharge;
+            
             EdkDll.ES_GetBatteryChargeLevel(this.es ,out currCharge, out maxCharge);
             Console.WriteLine("CurrCharge {0}, MaxCharge {1}", currCharge, maxCharge);
         }

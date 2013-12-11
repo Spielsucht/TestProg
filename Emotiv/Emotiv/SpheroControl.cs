@@ -6,13 +6,13 @@ using SpheroNET;
 
 namespace Emotiv
 {
-    class SpheroControler
+    class SpheroControl
     {
 
         private SpheroConnector spheroConnector;
         private Sphero sphero = null;
 
-        public SpheroControler()
+        public SpheroControl()
         {
             spheroConnector = new SpheroConnector();
         }

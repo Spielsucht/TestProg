@@ -179,7 +179,6 @@ namespace SpheroNET
                         return new SpheroAsyncPacket(packetData);
                     }
                 }
-
             }
            
             return null;
@@ -230,6 +229,5 @@ namespace SpheroNET
             if (PacketReady != null)
                 PacketReady(this, e);
         }
-
     }
 }

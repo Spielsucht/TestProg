@@ -8,11 +8,12 @@ namespace Emotiv
     class Coordinator
     {
         private bool ctrSphero = false;
-        private SpheroControler spheroControler;
+        private SpheroControl spheroControler;
+        private EmoControl emoControl;
 
         public Coordinator()
         {
-            spheroControler = new SpheroControler();
+            spheroControler = new SpheroControl();
         }
 
         public void connectToSphero()

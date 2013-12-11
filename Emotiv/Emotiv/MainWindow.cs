@@ -15,6 +15,7 @@ namespace Emotiv
         delegate void SetTextCallback(string text);
         private EmoControl control;
         private BackgroundWorker emoWorker;
+        private Coordinator coordinator;
         public delegate void loadProfile(string path);
         public event loadProfile onLoadProfile;
 
@@ -72,8 +73,25 @@ namespace Emotiv
             {
                 if (open.FileName != null)
                 {
-                    tbPofilePath.Text = open.FileName;
-                    this.onLoadProfile(open.FileName);
+                    try
+                    {
+                        tbPofilePath.Text = open.FileName;
+                        this.onLoadProfile(open.FileName);
+                    }
+                    catch (EmoEngineException ex)
+                    {
+                        MessageBox.Show(ex.Message + "\nBitte Emotiv Dongle überprüfen",
+                            "Fehler beim Profilladen.",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message,
+                            "Fehler",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                    }
                 }
             }
         }
