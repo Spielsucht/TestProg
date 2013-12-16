@@ -156,7 +156,7 @@ namespace SpheroTest
                         break;
                     case "setheading":
                         {
-                            if (parameters.Length < 1) break;
+                            if (parameters.Length < 2) break;
                             UInt16 heading;
                             if (UInt16.TryParse(parameters[1], out heading))
                             {
@@ -166,11 +166,11 @@ namespace SpheroTest
                         break;
                     case "move":
                         {
-                            if (parameters.Length < 2) break;
-                            UInt16 heading = 100;
+                            if (parameters.Length < 3) break;
+                            UInt16 heading;
                             float speed = float.Parse(parameters[1]);
                             //float.TryParse(parameters[1], out speed);
-                            if (float.TryParse(parameters[1], out speed))
+                            if (UInt16.TryParse(parameters[2], out heading))
                             {
                                 sphero.PerformMove(heading, speed);
                                 Thread.Sleep(10);

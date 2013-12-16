@@ -13,20 +13,13 @@ namespace Emotiv
         static Profile profile;
         private bool running = true;
         private EmoEngine engine;
-        private IntPtr es;
         private uint userID;
-        private MainWindow window;
-        private Coordinator coordinator;
+        private IController coordinator;
 
-
-        public EmoControl(MainWindow window)
+        public EmoControl(IController coor)
         {
-            this.window = window;
+            coordinator = coor;
             this.engine = EmoEngine.Instance;
-            this.es = EdkDll.ES_Create();
-            this.coordinator = new Coordinator();
-
-            window.onLoadProfile += new MainWindow.loadProfile(window_onLoadProfile);
 
             engine.EmoEngineConnected += new EmoEngine.EmoEngineConnectedEventHandler(engine_EmoEngineConnected);
             engine.EmoEngineDisconnected += new EmoEngine.EmoEngineDisconnectedEventHandler(engine_EmoEngineDisconnected);
@@ -37,11 +30,12 @@ namespace Emotiv
             engine.CognitivEmoStateUpdated += new EmoEngine.CognitivEmoStateUpdatedEventHandler(engine_CognitivEmoStateUpdated);
         }
 
-        private void window_onLoadProfile(string path)
+        public void onLoadProfile(string path)
         {
             engine.LoadUserProfile(userID, path);
             profile = engine.GetUserProfile(userID);
             engine.SetUserProfile(userID, profile);
+            Console.WriteLine("Profil loaded");
         }
 
         private void engine_EmoEngineDisconnected(object sender, EmoEngineEventArgs e)
@@ -55,16 +49,17 @@ namespace Emotiv
 
         private void engine_UserAdded(object sender, EmoEngineEventArgs e)
         {
-            Console.WriteLine("user added ({0})", e.userId);
+            
+            coordinator.setEmoDongleLabel("Dongle aktiv");
             userID = e.userId;
             profile = EmoEngine.Instance.GetUserProfile(userID); // Creates a new profile
             profile.GetBytes();
-            window.setLabelText("Dongle activ");
+            Console.WriteLine("user added ({0})", e.userId);
         }
         private void engine_UserRemoved(object sender, EmoEngineEventArgs e)
         {
+            coordinator.setEmoDongleLabel("Dongle inaktiv");
             Console.WriteLine("user removed");
-            window.setLabelText("Dongle removed");
         }
 
         private void engine_CognitivEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
@@ -75,12 +70,15 @@ namespace Emotiv
             {
                 case EdkDll.EE_CognitivAction_t.COG_NEUTRAL:
                     Console.WriteLine("Neutral");
+                    coordinator.move(this, 0, 360);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_PUSH:
                     Console.WriteLine("Push");
+                    coordinator.move(this, (float)0.3, 0);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_PULL:
                     Console.WriteLine("Pull");
+                    coordinator.move(this, (float)0.3, 180);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_LIFT:
                     break;
@@ -88,9 +86,11 @@ namespace Emotiv
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_LEFT:
                     Console.WriteLine("Left");
+                    coordinator.move(this, (float)0.3, 90);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_RIGHT:
                     Console.WriteLine("Right");
+                    coordinator.move(this, (float)0.3, 270);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_ROTATE_LEFT:
                     break;
@@ -110,13 +110,10 @@ namespace Emotiv
                     break;
             }
         }
+
         private void engine_EmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
-        {            
-            int currCharge;
-            int maxCharge;
+        {
             
-            EdkDll.ES_GetBatteryChargeLevel(this.es ,out currCharge, out maxCharge);
-            Console.WriteLine("CurrCharge {0}, MaxCharge {1}", currCharge, maxCharge);
         }
 
         public void stopRunning()
@@ -126,9 +123,10 @@ namespace Emotiv
 
         public void run()
         {
-            window.setLabelText("Dongle removed");
             running = true;
             engine.Connect();
+            EmoState es = new EmoState();
+            coordinator.setEmoDongleLabel("Dongle inaktiv");
             while (running)
             {
                 Thread.Sleep(1); // Lowers the CPU usaged by ~95% (or more)

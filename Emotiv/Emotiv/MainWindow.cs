@@ -9,60 +9,60 @@ using System.Windows.Forms;
 
 namespace Emotiv
 {
-    public partial class MainWindow : Form
+    public interface IObserver
     {
+        void textChange(IModelSetup model);
+        void spheroConnectionResponse(IModelSetup s);
+    }
 
-        delegate void SetTextCallback(string text);
-        private EmoControl control;
-        private BackgroundWorker emoWorker;
-        private Coordinator coordinator;
-        public delegate void loadProfile(string path);
-        public event loadProfile onLoadProfile;
+    public interface IView
+    {
+        void setCoordinatorLabels(IController coor, IGetLabels gbl);
+    }
+
+    public partial class MainWindow : Form, IView, IObserver
+    {
+        private IController coordinator;
+        private IGetLabels labels;
+
+        public void setCoordinatorLabels(IController coor, IGetLabels gbl)
+        {
+            coordinator = coor;
+            labels = gbl;
+        }
 
         public MainWindow()
         {
             InitializeComponent();
-            control = new EmoControl(this);
-            emoWorker = new BackgroundWorker();
 
-            startEmoControl();
+            chbCalibration.Enabled = false;
+            trbrCalibration.Enabled = false;
         }
 
-        public void setLabelText(string setText)
+        public void textChange(IModelSetup m)
         {
-            if (this.label1.InvokeRequired)
-            {
-                SetTextCallback d = new SetTextCallback(setLabelText);
-                this.Invoke(d, new object[] { setText });
-            }
-            else
-            {
-                this.label1.Text = setText;
-            }
+            string[] labelStrings = labels.getLabels();
+            this.Invoke((MethodInvoker)delegate(){
+                lbEmoStatus.Text = labelStrings[0];
+                lbConnection.Text = labelStrings[2];
+                lbHeadsetStatus.Text = "Headset Status: ";
+            });
         }
 
-        private void startEmoControl()
+        public void spheroConnectionResponse(IModelSetup s)
         {
-            if (!emoWorker.IsBusy)
-            {
-                emoWorker.DoWork += new DoWorkEventHandler(emoWorker_DoWork);
-                emoWorker.RunWorkerAsync();
-            }
-        }
-        private void emoWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            control.run();
+            chbCalibration.Enabled = true;
+            coordinator.setSpheroStatus(true);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            control.stopRunning();
+            coordinator.stopEmoControl();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            control.stopRunning();
-            emoWorker.Dispose();
+            coordinator.Dispose();
         }
 
         private void btSearch_Click(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace Emotiv
                     try
                     {
                         tbPofilePath.Text = open.FileName;
-                        this.onLoadProfile(open.FileName);
+                        coordinator.loadEmoProfil(open.FileName);
                     }
                     catch (EmoEngineException ex)
                     {
@@ -94,6 +94,58 @@ namespace Emotiv
                     }
                 }
             }
+        }
+
+        private void chbCalibration_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chbCalibration.Checked)
+            {
+                trbrCalibration.Enabled = true;
+                coordinator.setBackLED(true);
+                
+            }
+            else
+            {
+                trbrCalibration.Enabled = false;
+                coordinator.setBackLED(false);
+            }
+            trbrCalibration.Value = 180;
+            coordinator.setHeading(0);
+            coordinator.setUserControl("previousControl");
+        }
+
+        private void cbDevices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                switch (cbDevices.SelectedIndex)
+                {
+                    case 0:
+                        coordinator.connectToSphero();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                            "Fehler",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+            }
+        }
+
+        private void trbrCalibration_Scroll(object sender, EventArgs e)
+        {
+            coordinator.move(this ,0, trbrCalibration.Value);
+        }
+
+        private void RadioButtons_Checked(object sender, EventArgs e)
+        {
+            var RadioButton = groupBox1.Controls.OfType<RadioButton>().SingleOrDefault(rb => rb.Checked == true) as RadioButton;
+            coordinator.setUserControl(RadioButton.Text);
         }
     }
 }

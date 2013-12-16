@@ -15,7 +15,11 @@ namespace Emotiv
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+
+            MainWindow mw = new MainWindow();
+            Model mo = new Model();
+            IController co = new Coordinator(mw, mo);
+            Application.Run(mw);
         }
     }
 }
