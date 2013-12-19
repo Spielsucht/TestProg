@@ -74,11 +74,11 @@ namespace Emotiv
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_PUSH:
                     Console.WriteLine("Push");
-                    coordinator.move(this, (float)0.3, 0);
+                    coordinator.move(this, (float)0.4, 180);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_PULL:
                     Console.WriteLine("Pull");
-                    coordinator.move(this, (float)0.3, 180);
+                    coordinator.move(this, (float)0.4, 0);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_LIFT:
                     break;
@@ -86,11 +86,11 @@ namespace Emotiv
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_LEFT:
                     Console.WriteLine("Left");
-                    coordinator.move(this, (float)0.3, 90);
+                    coordinator.move(this, (float)0.4, 270);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_RIGHT:
                     Console.WriteLine("Right");
-                    coordinator.move(this, (float)0.3, 270);
+                    coordinator.move(this, (float)0.4, 90);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_ROTATE_LEFT:
                     break;

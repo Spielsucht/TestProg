@@ -127,7 +127,7 @@ namespace Emotiv
             {
                 heading = (UInt16)(180 - iHeading); 
             }
-            else if (iHeading > 180 && iHeading <= 360)
+            else if (iHeading > 180 && iHeading < 360)
             {
                 heading = (UInt16)(359 + 180 - iHeading);
             }

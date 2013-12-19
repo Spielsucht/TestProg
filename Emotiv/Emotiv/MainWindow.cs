@@ -147,5 +147,28 @@ namespace Emotiv
             var RadioButton = groupBox1.Controls.OfType<RadioButton>().SingleOrDefault(rb => rb.Checked == true) as RadioButton;
             coordinator.setUserControl(RadioButton.Text);
         }
+
+        private void MainWindow_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char key = e.KeyChar;
+            switch (key)
+            {
+                case 'w':
+                    coordinator.move(this, (float)0.4, 180);
+                    break;
+                case 's':
+                    coordinator.move(this, (float)0.4, 0);
+                    break;
+                case 'a':
+                    coordinator.move(this, (float)0.4, 270);
+                    break;
+                case 'd':
+                    coordinator.move(this, (float)0.4, 90);
+                    break;
+                default:
+                    coordinator.move(this, (float)0.0, 360);
+                    break;
+            }
+        }
     }
 }

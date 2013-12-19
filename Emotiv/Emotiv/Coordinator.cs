@@ -119,7 +119,7 @@ namespace Emotiv
         {
             if (model.getSpheroConStatus())
             {
-                spheroModel.sleep();
+                spheroModel.disconnectFromBall();
             }
             if (emoWorker.IsBusy)
             {

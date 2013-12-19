@@ -34,15 +34,15 @@
             this.tbPofilePath = new System.Windows.Forms.TextBox();
             this.btnOpen = new System.Windows.Forms.Button();
             this.grpEmo = new System.Windows.Forms.GroupBox();
+            this.lbHeadsetStatus = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioKeyboard = new System.Windows.Forms.RadioButton();
+            this.radioEmo = new System.Windows.Forms.RadioButton();
             this.lbConnection = new System.Windows.Forms.Label();
             this.cbDevices = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.chbCalibration = new System.Windows.Forms.CheckBox();
             this.trbrCalibration = new System.Windows.Forms.TrackBar();
-            this.radioEmo = new System.Windows.Forms.RadioButton();
-            this.radioKeyboard = new System.Windows.Forms.RadioButton();
-            this.lbHeadsetStatus = new System.Windows.Forms.Label();
             this.grpEmo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -113,6 +113,15 @@
             this.grpEmo.TabStop = false;
             this.grpEmo.Text = "Emotiv Control";
             // 
+            // lbHeadsetStatus
+            // 
+            this.lbHeadsetStatus.AutoSize = true;
+            this.lbHeadsetStatus.Location = new System.Drawing.Point(7, 19);
+            this.lbHeadsetStatus.Name = "lbHeadsetStatus";
+            this.lbHeadsetStatus.Size = new System.Drawing.Size(35, 13);
+            this.lbHeadsetStatus.TabIndex = 5;
+            this.lbHeadsetStatus.Text = "label1";
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.radioKeyboard);
@@ -125,6 +134,31 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
+            // 
+            // radioKeyboard
+            // 
+            this.radioKeyboard.AutoSize = true;
+            this.radioKeyboard.Location = new System.Drawing.Point(6, 42);
+            this.radioKeyboard.Name = "radioKeyboard";
+            this.radioKeyboard.Size = new System.Drawing.Size(64, 17);
+            this.radioKeyboard.TabIndex = 3;
+            this.radioKeyboard.TabStop = true;
+            this.radioKeyboard.Text = "Tastatur";
+            this.radioKeyboard.UseVisualStyleBackColor = true;
+            this.radioKeyboard.Click += new System.EventHandler(this.RadioButtons_Checked);
+            this.radioKeyboard.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainWindow_KeyPress);
+            // 
+            // radioEmo
+            // 
+            this.radioEmo.AutoSize = true;
+            this.radioEmo.Location = new System.Drawing.Point(6, 19);
+            this.radioEmo.Name = "radioEmo";
+            this.radioEmo.Size = new System.Drawing.Size(57, 17);
+            this.radioEmo.TabIndex = 2;
+            this.radioEmo.TabStop = true;
+            this.radioEmo.Text = "Emotiv";
+            this.radioEmo.UseVisualStyleBackColor = true;
+            this.radioEmo.Click += new System.EventHandler(this.RadioButtons_Checked);
             // 
             // lbConnection
             // 
@@ -161,7 +195,7 @@
             // chbCalibration
             // 
             this.chbCalibration.AutoSize = true;
-            this.chbCalibration.Location = new System.Drawing.Point(6, 42);
+            this.chbCalibration.Location = new System.Drawing.Point(6, 19);
             this.chbCalibration.Name = "chbCalibration";
             this.chbCalibration.Size = new System.Drawing.Size(81, 17);
             this.chbCalibration.TabIndex = 1;
@@ -171,7 +205,7 @@
             // 
             // trbrCalibration
             // 
-            this.trbrCalibration.Location = new System.Drawing.Point(87, 42);
+            this.trbrCalibration.Location = new System.Drawing.Point(87, 19);
             this.trbrCalibration.Maximum = 365;
             this.trbrCalibration.Name = "trbrCalibration";
             this.trbrCalibration.Size = new System.Drawing.Size(400, 45);
@@ -181,39 +215,6 @@
             this.trbrCalibration.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trbrCalibration.Value = 180;
             this.trbrCalibration.Scroll += new System.EventHandler(this.trbrCalibration_Scroll);
-            // 
-            // radioEmo
-            // 
-            this.radioEmo.AutoSize = true;
-            this.radioEmo.Location = new System.Drawing.Point(6, 19);
-            this.radioEmo.Name = "radioEmo";
-            this.radioEmo.Size = new System.Drawing.Size(57, 17);
-            this.radioEmo.TabIndex = 2;
-            this.radioEmo.TabStop = true;
-            this.radioEmo.Text = "Emotiv";
-            this.radioEmo.UseVisualStyleBackColor = true;
-            this.radioEmo.Click += new System.EventHandler(this.RadioButtons_Checked);
-            // 
-            // radioKeyboard
-            // 
-            this.radioKeyboard.AutoSize = true;
-            this.radioKeyboard.Location = new System.Drawing.Point(6, 42);
-            this.radioKeyboard.Name = "radioKeyboard";
-            this.radioKeyboard.Size = new System.Drawing.Size(64, 17);
-            this.radioKeyboard.TabIndex = 3;
-            this.radioKeyboard.TabStop = true;
-            this.radioKeyboard.Text = "Tastatur";
-            this.radioKeyboard.UseVisualStyleBackColor = true;
-            this.radioKeyboard.Click += new System.EventHandler(this.RadioButtons_Checked);
-            // 
-            // lbHeadsetStatus
-            // 
-            this.lbHeadsetStatus.AutoSize = true;
-            this.lbHeadsetStatus.Location = new System.Drawing.Point(7, 19);
-            this.lbHeadsetStatus.Name = "lbHeadsetStatus";
-            this.lbHeadsetStatus.Size = new System.Drawing.Size(35, 13);
-            this.lbHeadsetStatus.TabIndex = 5;
-            this.lbHeadsetStatus.Text = "label1";
             // 
             // MainWindow
             // 
