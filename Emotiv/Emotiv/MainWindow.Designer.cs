@@ -36,16 +36,21 @@
             this.grpEmo = new System.Windows.Forms.GroupBox();
             this.lbHeadsetStatus = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioExp = new System.Windows.Forms.RadioButton();
             this.radioKeyboard = new System.Windows.Forms.RadioButton();
-            this.radioEmo = new System.Windows.Forms.RadioButton();
+            this.radioCog = new System.Windows.Forms.RadioButton();
             this.lbConnection = new System.Windows.Forms.Label();
             this.cbDevices = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btSleep = new System.Windows.Forms.Button();
+            this.trbrSpeed = new System.Windows.Forms.TrackBar();
+            this.lbSpeed = new System.Windows.Forms.Label();
             this.chbCalibration = new System.Windows.Forms.CheckBox();
             this.trbrCalibration = new System.Windows.Forms.TrackBar();
             this.grpEmo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trbrSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbrCalibration)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,8 +129,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.radioExp);
             this.groupBox1.Controls.Add(this.radioKeyboard);
-            this.groupBox1.Controls.Add(this.radioEmo);
+            this.groupBox1.Controls.Add(this.radioCog);
             this.groupBox1.Controls.Add(this.lbConnection);
             this.groupBox1.Controls.Add(this.cbDevices);
             this.groupBox1.Location = new System.Drawing.Point(12, 141);
@@ -134,6 +140,17 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
+            // 
+            // radioExp
+            // 
+            this.radioExp.AutoSize = true;
+            this.radioExp.Location = new System.Drawing.Point(87, 19);
+            this.radioExp.Name = "radioExp";
+            this.radioExp.Size = new System.Drawing.Size(52, 17);
+            this.radioExp.TabIndex = 4;
+            this.radioExp.TabStop = true;
+            this.radioExp.Text = "Mimik";
+            this.radioExp.UseVisualStyleBackColor = true;
             // 
             // radioKeyboard
             // 
@@ -147,18 +164,19 @@
             this.radioKeyboard.UseVisualStyleBackColor = true;
             this.radioKeyboard.Click += new System.EventHandler(this.RadioButtons_Checked);
             this.radioKeyboard.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainWindow_KeyPress);
+            this.radioKeyboard.KeyUp += new System.Windows.Forms.KeyEventHandler(this.radioKeyboard_KeyUp);
             // 
-            // radioEmo
+            // radioCog
             // 
-            this.radioEmo.AutoSize = true;
-            this.radioEmo.Location = new System.Drawing.Point(6, 19);
-            this.radioEmo.Name = "radioEmo";
-            this.radioEmo.Size = new System.Drawing.Size(57, 17);
-            this.radioEmo.TabIndex = 2;
-            this.radioEmo.TabStop = true;
-            this.radioEmo.Text = "Emotiv";
-            this.radioEmo.UseVisualStyleBackColor = true;
-            this.radioEmo.Click += new System.EventHandler(this.RadioButtons_Checked);
+            this.radioCog.AutoSize = true;
+            this.radioCog.Location = new System.Drawing.Point(6, 19);
+            this.radioCog.Name = "radioCog";
+            this.radioCog.Size = new System.Drawing.Size(75, 17);
+            this.radioCog.TabIndex = 2;
+            this.radioCog.TabStop = true;
+            this.radioCog.Text = "Gedanken";
+            this.radioCog.UseVisualStyleBackColor = true;
+            this.radioCog.Click += new System.EventHandler(this.RadioButtons_Checked);
             // 
             // lbConnection
             // 
@@ -183,6 +201,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btSleep);
+            this.groupBox2.Controls.Add(this.trbrSpeed);
+            this.groupBox2.Controls.Add(this.lbSpeed);
             this.groupBox2.Controls.Add(this.chbCalibration);
             this.groupBox2.Controls.Add(this.trbrCalibration);
             this.groupBox2.Location = new System.Drawing.Point(12, 213);
@@ -191,6 +212,34 @@
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sphero";
+            // 
+            // btSleep
+            // 
+            this.btSleep.Location = new System.Drawing.Point(402, 41);
+            this.btSleep.Name = "btSleep";
+            this.btSleep.Size = new System.Drawing.Size(85, 23);
+            this.btSleep.TabIndex = 4;
+            this.btSleep.Text = "Schlaf-Modus";
+            this.btSleep.UseVisualStyleBackColor = true;
+            this.btSleep.Visible = false;
+            // 
+            // trbrSpeed
+            // 
+            this.trbrSpeed.Location = new System.Drawing.Point(87, 70);
+            this.trbrSpeed.Name = "trbrSpeed";
+            this.trbrSpeed.Size = new System.Drawing.Size(201, 45);
+            this.trbrSpeed.TabIndex = 3;
+            this.trbrSpeed.Value = 4;
+            this.trbrSpeed.Scroll += new System.EventHandler(this.trbrSpeed_Scroll);
+            // 
+            // lbSpeed
+            // 
+            this.lbSpeed.AutoSize = true;
+            this.lbSpeed.Location = new System.Drawing.Point(3, 70);
+            this.lbSpeed.Name = "lbSpeed";
+            this.lbSpeed.Size = new System.Drawing.Size(46, 13);
+            this.lbSpeed.TabIndex = 2;
+            this.lbSpeed.Text = "lbSpeed";
             // 
             // chbCalibration
             // 
@@ -233,6 +282,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trbrSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbrCalibration)).EndInit();
             this.ResumeLayout(false);
 
@@ -253,8 +303,12 @@
         private System.Windows.Forms.Label lbConnection;
         private System.Windows.Forms.ComboBox cbDevices;
         private System.Windows.Forms.RadioButton radioKeyboard;
-        private System.Windows.Forms.RadioButton radioEmo;
+        private System.Windows.Forms.RadioButton radioCog;
         private System.Windows.Forms.Label lbHeadsetStatus;
+        private System.Windows.Forms.RadioButton radioExp;
+        private System.Windows.Forms.TrackBar trbrSpeed;
+        private System.Windows.Forms.Label lbSpeed;
+        private System.Windows.Forms.Button btSleep;
 
     }
 }

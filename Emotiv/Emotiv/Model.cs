@@ -11,8 +11,10 @@ namespace Emotiv
     {
         void setEmoDongleLabel(string status);
         void setSpheroConStatus(bool status);
-        bool getSpheroConStatus();
         void setUserControl(string radioButtonName);
+        void setSpheroSpeed(string snumber, float fnumber);
+
+        bool getSpheroConStatus();
         string getUserControl();
     }
 
@@ -28,6 +30,7 @@ namespace Emotiv
         private ISetLabels labels;
         private string userControl;
         private string previousControl = null;
+        private float speed;
 
         public event ModelTextHandler<Model> textChange;
 
@@ -52,31 +55,21 @@ namespace Emotiv
             return spheroConnectStatus;
         }
 
-        public void setUserControl(string radioButtonName)
+        public void setUserControl(string controlName)
         {
-            if (radioButtonName == "Emotiv")
-            {
-                userControl = "EmoControl";
-            }
-            else if (radioButtonName == "Tastatur")
-            {
-                userControl = "MainWindow";
-            }
-            else if (radioButtonName == "previousControl")
-            {
-                string tmp = userControl;
-                userControl = previousControl;
-                previousControl = tmp;
-            }
-            else
-            {
-                userControl = null;
-            }
+            userControl = controlName;
         }
 
         public string getUserControl()
         {
             return userControl;
+        }
+
+        public void setSpheroSpeed(string snumber, float fnumber)
+        {
+            labels.spheroSpeedText(snumber);
+            speed = fnumber;
+            textChange(this);
         }
 
         public void setLabelsClass(ISetLabels slb)

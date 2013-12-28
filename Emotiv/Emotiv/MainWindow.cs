@@ -45,7 +45,8 @@ namespace Emotiv
             this.Invoke((MethodInvoker)delegate(){
                 lbEmoStatus.Text = labelStrings[0];
                 lbConnection.Text = labelStrings[2];
-                lbHeadsetStatus.Text = "Headset Status: ";
+                lbHeadsetStatus.Text = "Headset Status: " + labelStrings[1];
+                lbSpeed.Text = "Geschw.: " + labelStrings[3] + "%";
             });
         }
 
@@ -60,8 +61,15 @@ namespace Emotiv
             coordinator.stopEmoControl();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            trbrSpeed_Scroll(this, new EventArgs());
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
+            base.OnClosing(e);
             coordinator.Dispose();
         }
 
@@ -102,16 +110,16 @@ namespace Emotiv
             {
                 trbrCalibration.Enabled = true;
                 coordinator.setBackLED(true);
-                
+                coordinator.setUserControl("cali");
             }
             else
             {
                 trbrCalibration.Enabled = false;
                 coordinator.setBackLED(false);
+                RadioButtons_Checked(this, new EventArgs());
             }
             trbrCalibration.Value = 180;
             coordinator.setHeading(0);
-            coordinator.setUserControl("previousControl");
         }
 
         private void cbDevices_SelectedIndexChanged(object sender, EventArgs e)
@@ -139,7 +147,12 @@ namespace Emotiv
 
         private void trbrCalibration_Scroll(object sender, EventArgs e)
         {
-            coordinator.move(this ,0, trbrCalibration.Value);
+            coordinator.move("cali" ,0, trbrCalibration.Value);
+        }
+
+        private void trbrSpeed_Scroll(object sender, EventArgs e)
+        {
+            coordinator.setSpeed(trbrSpeed.Value);
         }
 
         private void RadioButtons_Checked(object sender, EventArgs e)
@@ -154,21 +167,26 @@ namespace Emotiv
             switch (key)
             {
                 case 'w':
-                    coordinator.move(this, (float)0.4, 180);
+                    coordinator.move("key", (float)0.4, 180);
                     break;
                 case 's':
-                    coordinator.move(this, (float)0.4, 0);
+                    coordinator.move("key", (float)0.4, 0);
                     break;
                 case 'a':
-                    coordinator.move(this, (float)0.4, 270);
+                    coordinator.move("key", (float)0.4, 270);
                     break;
                 case 'd':
-                    coordinator.move(this, (float)0.4, 90);
+                    coordinator.move("key", (float)0.4, 90);
                     break;
                 default:
-                    coordinator.move(this, (float)0.0, 360);
+                    coordinator.move("key", (float)0.0, 360);
                     break;
             }
+        }
+
+        private void radioKeyboard_KeyUp(object sender, KeyEventArgs e)
+        {
+            coordinator.move("key", (float)0.0, 360);
         }
     }
 }

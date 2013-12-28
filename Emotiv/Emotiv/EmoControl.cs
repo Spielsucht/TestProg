@@ -28,6 +28,7 @@ namespace Emotiv
 
             engine.EmoStateUpdated += new EmoEngine.EmoStateUpdatedEventHandler(engine_EmoStateUpdated);
             engine.CognitivEmoStateUpdated += new EmoEngine.CognitivEmoStateUpdatedEventHandler(engine_CognitivEmoStateUpdated);
+            //engine.ExpressivEmoStateUpdated += new EmoEngine.ExpressivEmoStateUpdatedEventHandler(engine_ExpressivEmoStateUpdated);
         }
 
         public void onLoadProfile(string path)
@@ -62,6 +63,11 @@ namespace Emotiv
             Console.WriteLine("user removed");
         }
 
+        private void engine_EmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
+        {
+            
+        }
+
         private void engine_CognitivEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
         {
             EmoState es = e.emoState;
@@ -69,16 +75,16 @@ namespace Emotiv
             switch (currAction)
             {
                 case EdkDll.EE_CognitivAction_t.COG_NEUTRAL:
-                    Console.WriteLine("Neutral");
-                    coordinator.move(this, 0, 360);
+                    Console.WriteLine("Neutral (Cog)");
+                    coordinator.move("cog", 0, 360);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_PUSH:
                     Console.WriteLine("Push");
-                    coordinator.move(this, (float)0.4, 180);
+                    coordinator.move("cog", (float)0.4, 180);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_PULL:
                     Console.WriteLine("Pull");
-                    coordinator.move(this, (float)0.4, 0);
+                    coordinator.move("cog", (float)0.4, 0);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_LIFT:
                     break;
@@ -86,11 +92,11 @@ namespace Emotiv
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_LEFT:
                     Console.WriteLine("Left");
-                    coordinator.move(this, (float)0.4, 270);
+                    coordinator.move("cog", (float)0.4, 270);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_RIGHT:
                     Console.WriteLine("Right");
-                    coordinator.move(this, (float)0.4, 90);
+                    coordinator.move("cog", (float)0.4, 90);
                     break;
                 case EdkDll.EE_CognitivAction_t.COG_ROTATE_LEFT:
                     break;
@@ -111,9 +117,44 @@ namespace Emotiv
             }
         }
 
-        private void engine_EmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
+        void engine_ExpressivEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
         {
-            
+            EmoState es = e.emoState;
+            EdkDll.EE_ExpressivAlgo_t currLowerAction = es.ExpressivGetLowerFaceAction();
+            EdkDll.EE_ExpressivAlgo_t currUpperAction = es.ExpressivGetUpperFaceAction();
+            Console.WriteLine(currLowerAction.ToString());
+            Console.WriteLine(currUpperAction.ToString());
+            switch (currLowerAction)
+            {
+                case EdkDll.EE_ExpressivAlgo_t.EXP_NEUTRAL:
+                    Console.WriteLine("Neutral (Exp)");
+                    coordinator.move("exp", (float)0.0, 360);
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_BLINK:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_WINK_LEFT:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_WINK_RIGHT:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_HORIEYE:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_EYEBROW:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_FURROW:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_SMILE:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_CLENCH:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_LAUGH:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_SMIRK_LEFT:
+                    break;
+                case EdkDll.EE_ExpressivAlgo_t.EXP_SMIRK_RIGHT:
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void stopRunning()

@@ -19,7 +19,8 @@ namespace Emotiv
         void setEmoDongleLabel(string status);
         void setSpheroStatus(bool status);
         void setUserControl(string radioButtonName);
-        void move(object sender, float speed, int iHeading);
+        void move(string sender, float speed, int iHeading);
+        void setSpeed(int value);
     }
 
     class Coordinator : IController
@@ -101,25 +102,50 @@ namespace Emotiv
             model.setSpheroConStatus(status);
         }
 
-        public void setUserControl(string radioButtonName)
+        public void setUserControl(string controlName)
         {
-            model.setUserControl(radioButtonName);
+            if (controlName == "Gedanken")
+            {
+                model.setUserControl("cog");
+            }
+            else if (controlName == "Mimik")
+            {
+                model.setUserControl("exp");
+            }
+            else if (controlName == "Tastatur")
+            {
+                model.setUserControl("key");
+            }
+            else if (controlName == "cali")
+            {
+                model.setUserControl("cali");
+            }
+            else
+            {
+                model.setUserControl(null);
+            }
         }
 
-        public void move(object sender, float speed, int iHeading)
+        public void move(string sender, float speed, int iHeading)
         {
-            string type = sender.GetType().Name;
-            if (((type == model.getUserControl()) || (speed == 0)) && model.getSpheroConStatus()) //
+            if (((sender == model.getUserControl()) || (speed == 0)) && model.getSpheroConStatus()) //
             {
                 spheroModel.moveBall(speed, iHeading);
             }
+        }
+
+        public void setSpeed(int value)
+        {
+            float fspeed = value / 10;
+            string sspeed = (value * 10).ToString();
+            model.setSpheroSpeed(sspeed, fspeed);
         }
 
         public void Dispose()
         {
             if (model.getSpheroConStatus())
             {
-                spheroModel.disconnectFromBall();
+                spheroModel.sleep();
             }
             if (emoWorker.IsBusy)
             {

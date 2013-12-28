@@ -15,12 +15,14 @@ namespace Emotiv
         void setDongleStatusText(string text);
         void emoStatusText(string text);
         void spheroStatusText(string text);
+        void spheroSpeedText(string speed);
     }
     class Labels : IGetLabels, ISetLabels
     {
         private string dongleStatus;
         private string emoStatus;
         private string spheroStatus;
+        private string speed;
 
         public Labels()
         {
@@ -42,9 +44,14 @@ namespace Emotiv
             spheroStatus = text;
         }
 
+        public void spheroSpeedText(string number)
+        {
+            speed = number;
+        }
+
         public string[] getLabels()
         {
-            return new string[] { dongleStatus, emoStatus, spheroStatus };
+            return new string[] { dongleStatus, emoStatus, spheroStatus, speed};
         }
     }
 }
