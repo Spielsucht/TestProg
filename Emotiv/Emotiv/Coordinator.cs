@@ -19,8 +19,12 @@ namespace Emotiv
         void setEmoDongleLabel(string status);
         void setSpheroStatus(bool status);
         void setUserControl(string radioButtonName);
-        void move(string sender, float speed, int iHeading);
         void setSpeed(int value);
+        void expressivControl(string upper, string lower);
+        void cognitivControl(EdkDll.EE_CognitivAction_t action);
+        void keyControl(char key);
+        void caliBall(int heading);
+        void headsetStatus(int currCharge, int maxCharge, int gyroX, int gyroY, int headsetOn);
     }
 
     class Coordinator : IController
@@ -104,41 +108,164 @@ namespace Emotiv
 
         public void setUserControl(string controlName)
         {
-            if (controlName == "Gedanken")
+            switch (controlName)
             {
-                model.setUserControl("cog");
-            }
-            else if (controlName == "Mimik")
-            {
-                model.setUserControl("exp");
-            }
-            else if (controlName == "Tastatur")
-            {
-                model.setUserControl("key");
-            }
-            else if (controlName == "cali")
-            {
-                model.setUserControl("cali");
-            }
-            else
-            {
-                model.setUserControl(null);
+                case "Gedanken":
+                    model.setUserControl("cog");
+                    break;
+                case "Mimik":
+                    model.setUserControl("exp");
+                    break;
+                case "Tastatur":
+                    model.setUserControl("key");
+                    break;
+                case "cali":
+                    model.setUserControl("cali");
+                    break;
+                default:
+                    model.setUserControl(null);
+                    break;
             }
         }
 
-        public void move(string sender, float speed, int iHeading)
+        private void move(string sender, int iHeading)
         {
-            if (((sender == model.getUserControl()) || (speed == 0)) && model.getSpheroConStatus()) //
+            float speed;
+            if (sender == model.getUserControl() && model.getSpheroConStatus())
             {
+                if (sender == "cali" || iHeading == 360)
+                {
+                    speed = 0.0f;
+                }
+                else
+                {
+                    speed = model.getSpeed();
+                }
                 spheroModel.moveBall(speed, iHeading);
             }
         }
 
         public void setSpeed(int value)
         {
-            float fspeed = value / 10;
+            float fspeed = (float)value / 10;
             string sspeed = (value * 10).ToString();
             model.setSpheroSpeed(sspeed, fspeed);
+        }
+
+        public void keyControl(char key)
+        {
+            int heading = 360;
+            switch (key)
+            {
+                case 'w':
+                    heading = 180;
+                    break;
+                case 's':
+                    heading = 0;
+                    break;
+                case 'a':
+                    heading = 270;
+                    break;
+                case 'd':
+                    heading = 90;
+                    break;
+                default:
+                    heading = 360;
+                    break;
+            }
+            move("key", heading);
+        }
+
+        public void caliBall(int heading)
+        {
+            move("cali", heading);
+        }
+
+        public void cognitivControl(EdkDll.EE_CognitivAction_t action)
+        {
+            int heading = 360;
+            switch (action)
+            {
+                case EdkDll.EE_CognitivAction_t.COG_NEUTRAL:
+                    Console.WriteLine("Neutral (Cog)");
+                    heading = 360;
+                    break;
+                case EdkDll.EE_CognitivAction_t.COG_PUSH:
+                    Console.WriteLine("Push");
+                    heading = 180;
+                    break;
+                case EdkDll.EE_CognitivAction_t.COG_PULL:
+                    Console.WriteLine("Pull");
+                    heading = 0;
+                    break;
+                case EdkDll.EE_CognitivAction_t.COG_LEFT:
+                    Console.WriteLine("Left");
+                    heading = 270;
+                    break;
+                case EdkDll.EE_CognitivAction_t.COG_RIGHT:
+                    Console.WriteLine("Right");
+                    heading = 90;
+                    break;
+                default:
+                    heading = -1;
+                    break;
+            }
+            if (heading >= 0)
+            {
+                move("cog", heading);
+            }
+            
+        }
+
+        public void expressivControl (string upper, string lower)
+        {
+            int heading = 360;
+            string[] lowerAndUpper = { lower, upper };
+            if (lowerAndUpper[0] == lowerAndUpper[1])
+            {
+                heading = 360;
+            }
+            else if (lowerAndUpper.Count(action => action.Contains("EXP_NEUTRAL") == true) == 1)
+            {
+                foreach (string action in lowerAndUpper)
+                {
+                    if (action != "EXP_NEUTRAL")
+                    {
+                        switch (action)
+                        {
+                            case "EXP_EYEBROW":
+                                heading = 0;
+                                break;
+                            case "EXP_SMILE":
+                                heading = 180;
+                                break;
+                            case "EXP_SMIRK_LEFT":
+                                heading = 270;
+                                break;
+                            case "EXP_SMIRK_RIGHT":
+                                heading = 90;
+                                break;
+                            default:
+                                heading = -1;
+                                break;
+                        } 
+                    }
+                }
+            }
+            else
+            {
+                heading = 360;
+            }
+            if (heading >= 0)
+            {
+                Console.WriteLine(upper + " , " + lower + " , " + heading.ToString());
+                move("exp", heading);
+            }
+        }
+
+        public void headsetStatus(int currCharge, int maxCharge, int gyroX, int gyroY, int headsetOn)
+        {
+
         }
 
         public void Dispose()

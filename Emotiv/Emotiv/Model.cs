@@ -16,6 +16,7 @@ namespace Emotiv
 
         bool getSpheroConStatus();
         string getUserControl();
+        float getSpeed();
     }
 
     public interface IModelSetup
@@ -29,8 +30,9 @@ namespace Emotiv
         private bool spheroConnectStatus;
         private ISetLabels labels;
         private string userControl;
-        private string previousControl = null;
         private float speed;
+        private int gyroMaxX;
+        private int gyroMaxY;
 
         public event ModelTextHandler<Model> textChange;
 
@@ -70,6 +72,11 @@ namespace Emotiv
             labels.spheroSpeedText(snumber);
             speed = fnumber;
             textChange(this);
+        }
+
+        public float getSpeed()
+        {
+            return speed;
         }
 
         public void setLabelsClass(ISetLabels slb)

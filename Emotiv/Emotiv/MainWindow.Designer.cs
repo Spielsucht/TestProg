@@ -47,6 +47,7 @@
             this.lbSpeed = new System.Windows.Forms.Label();
             this.chbCalibration = new System.Windows.Forms.CheckBox();
             this.trbrCalibration = new System.Windows.Forms.TrackBar();
+            this.pbHeadsetBattery = new System.Windows.Forms.ProgressBar();
             this.grpEmo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -105,6 +106,7 @@
             // 
             // grpEmo
             // 
+            this.grpEmo.Controls.Add(this.pbHeadsetBattery);
             this.grpEmo.Controls.Add(this.lbHeadsetStatus);
             this.grpEmo.Controls.Add(this.button1);
             this.grpEmo.Controls.Add(this.tbPofilePath);
@@ -151,6 +153,7 @@
             this.radioExp.TabStop = true;
             this.radioExp.Text = "Mimik";
             this.radioExp.UseVisualStyleBackColor = true;
+            this.radioExp.Click += new System.EventHandler(this.RadioButtons_Checked);
             // 
             // radioKeyboard
             // 
@@ -265,6 +268,14 @@
             this.trbrCalibration.Value = 180;
             this.trbrCalibration.Scroll += new System.EventHandler(this.trbrCalibration_Scroll);
             // 
+            // pbHeadsetBattery
+            // 
+            this.pbHeadsetBattery.Location = new System.Drawing.Point(87, 47);
+            this.pbHeadsetBattery.Name = "pbHeadsetBattery";
+            this.pbHeadsetBattery.Size = new System.Drawing.Size(100, 23);
+            this.pbHeadsetBattery.Step = 5;
+            this.pbHeadsetBattery.TabIndex = 6;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -309,6 +320,7 @@
         private System.Windows.Forms.TrackBar trbrSpeed;
         private System.Windows.Forms.Label lbSpeed;
         private System.Windows.Forms.Button btSleep;
+        private System.Windows.Forms.ProgressBar pbHeadsetBattery;
 
     }
 }

@@ -47,6 +47,7 @@ namespace Emotiv
                 lbConnection.Text = labelStrings[2];
                 lbHeadsetStatus.Text = "Headset Status: " + labelStrings[1];
                 lbSpeed.Text = "Geschw.: " + labelStrings[3] + "%";
+                
             });
         }
 
@@ -147,7 +148,7 @@ namespace Emotiv
 
         private void trbrCalibration_Scroll(object sender, EventArgs e)
         {
-            coordinator.move("cali" ,0, trbrCalibration.Value);
+            coordinator.caliBall(trbrCalibration.Value);
         }
 
         private void trbrSpeed_Scroll(object sender, EventArgs e)
@@ -158,35 +159,20 @@ namespace Emotiv
         private void RadioButtons_Checked(object sender, EventArgs e)
         {
             var RadioButton = groupBox1.Controls.OfType<RadioButton>().SingleOrDefault(rb => rb.Checked == true) as RadioButton;
-            coordinator.setUserControl(RadioButton.Text);
+            if (RadioButton != null)
+            {
+                coordinator.setUserControl(RadioButton.Text);
+            }
         }
 
         private void MainWindow_KeyPress(object sender, KeyPressEventArgs e)
         {
-            char key = e.KeyChar;
-            switch (key)
-            {
-                case 'w':
-                    coordinator.move("key", (float)0.4, 180);
-                    break;
-                case 's':
-                    coordinator.move("key", (float)0.4, 0);
-                    break;
-                case 'a':
-                    coordinator.move("key", (float)0.4, 270);
-                    break;
-                case 'd':
-                    coordinator.move("key", (float)0.4, 90);
-                    break;
-                default:
-                    coordinator.move("key", (float)0.0, 360);
-                    break;
-            }
+            coordinator.keyControl(e.KeyChar);
         }
 
         private void radioKeyboard_KeyUp(object sender, KeyEventArgs e)
         {
-            coordinator.move("key", (float)0.0, 360);
+            coordinator.keyControl('h');
         }
     }
 }

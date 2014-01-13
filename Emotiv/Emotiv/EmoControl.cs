@@ -28,7 +28,7 @@ namespace Emotiv
 
             engine.EmoStateUpdated += new EmoEngine.EmoStateUpdatedEventHandler(engine_EmoStateUpdated);
             engine.CognitivEmoStateUpdated += new EmoEngine.CognitivEmoStateUpdatedEventHandler(engine_CognitivEmoStateUpdated);
-            //engine.ExpressivEmoStateUpdated += new EmoEngine.ExpressivEmoStateUpdatedEventHandler(engine_ExpressivEmoStateUpdated);
+            engine.ExpressivEmoStateUpdated += new EmoEngine.ExpressivEmoStateUpdatedEventHandler(engine_ExpressivEmoStateUpdated);
         }
 
         public void onLoadProfile(string path)
@@ -50,7 +50,6 @@ namespace Emotiv
 
         private void engine_UserAdded(object sender, EmoEngineEventArgs e)
         {
-            
             coordinator.setEmoDongleLabel("Dongle aktiv");
             userID = e.userId;
             profile = EmoEngine.Instance.GetUserProfile(userID); // Creates a new profile
@@ -65,96 +64,34 @@ namespace Emotiv
 
         private void engine_EmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
         {
-            
+            int x = 0, y = 0;
+            int max = 0, curr = 0;
+            EmoState es = e.emoState;
+            EdkDll.EE_SignalStrength_t signal = es.GetWirelessSignalStatus();
+            if (es.GetTimeFromStart() > 5 && signal != EdkDll.EE_SignalStrength_t.NO_SIGNAL)
+            {
+                engine.HeadsetGetGyroDelta(userID, out x, out y);
+                es.GetBatteryChargeLevel(out curr, out max);
+                Console.WriteLine("X: "+ x.ToString() + " Y: "+ y.ToString() +"");
+                coordinator.headsetStatus(curr, max, x, y, 1);
+            }
+            else if (signal == EdkDll.EE_SignalStrength_t.NO_SIGNAL)
+            {
+                int headsetStatus = es.GetHeadsetOn();
+                coordinator.headsetStatus(curr, max, x, y, 1);
+            }
         }
 
         private void engine_CognitivEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
         {
             EmoState es = e.emoState;
-            EdkDll.EE_CognitivAction_t currAction = es.CognitivGetCurrentAction();
-            switch (currAction)
-            {
-                case EdkDll.EE_CognitivAction_t.COG_NEUTRAL:
-                    Console.WriteLine("Neutral (Cog)");
-                    coordinator.move("cog", 0, 360);
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_PUSH:
-                    Console.WriteLine("Push");
-                    coordinator.move("cog", (float)0.4, 180);
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_PULL:
-                    Console.WriteLine("Pull");
-                    coordinator.move("cog", (float)0.4, 0);
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_LIFT:
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_DROP:
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_LEFT:
-                    Console.WriteLine("Left");
-                    coordinator.move("cog", (float)0.4, 270);
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_RIGHT:
-                    Console.WriteLine("Right");
-                    coordinator.move("cog", (float)0.4, 90);
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_ROTATE_LEFT:
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_ROTATE_RIGHT:
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_ROTATE_CLOCKWISE:
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_ROTATE_COUNTER_CLOCKWISE:
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_ROTATE_FORWARDS:
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_ROTATE_REVERSE:
-                    break;
-                case EdkDll.EE_CognitivAction_t.COG_DISAPPEAR:
-                    break;
-                default:
-                    break;
-            }
+            coordinator.cognitivControl(es.CognitivGetCurrentAction());
         }
 
         void engine_ExpressivEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
         {
             EmoState es = e.emoState;
-            EdkDll.EE_ExpressivAlgo_t currLowerAction = es.ExpressivGetLowerFaceAction();
-            EdkDll.EE_ExpressivAlgo_t currUpperAction = es.ExpressivGetUpperFaceAction();
-            Console.WriteLine(currLowerAction.ToString());
-            Console.WriteLine(currUpperAction.ToString());
-            switch (currLowerAction)
-            {
-                case EdkDll.EE_ExpressivAlgo_t.EXP_NEUTRAL:
-                    Console.WriteLine("Neutral (Exp)");
-                    coordinator.move("exp", (float)0.0, 360);
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_BLINK:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_WINK_LEFT:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_WINK_RIGHT:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_HORIEYE:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_EYEBROW:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_FURROW:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_SMILE:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_CLENCH:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_LAUGH:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_SMIRK_LEFT:
-                    break;
-                case EdkDll.EE_ExpressivAlgo_t.EXP_SMIRK_RIGHT:
-                    break;
-                default:
-                    break;
-            }
+            coordinator.expressivControl(es.ExpressivGetUpperFaceAction().ToString(),es.ExpressivGetLowerFaceAction().ToString());
         }
 
         public void stopRunning()

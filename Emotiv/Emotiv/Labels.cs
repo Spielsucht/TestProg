@@ -17,16 +17,20 @@ namespace Emotiv
         void spheroStatusText(string text);
         void spheroSpeedText(string speed);
     }
+
     class Labels : IGetLabels, ISetLabels
     {
         private string dongleStatus;
         private string emoStatus;
         private string spheroStatus;
         private string speed;
+        public int currCharge;
+        public int maxCharge;
 
         public Labels()
         {
-            
+            currCharge = 0;
+            maxCharge = 0;
         }
 
         public void setDongleStatusText(string text)
