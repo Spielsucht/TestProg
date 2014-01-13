@@ -68,18 +68,19 @@ namespace Emotiv
             int max = 0, curr = 0;
             EmoState es = e.emoState;
             EdkDll.EE_SignalStrength_t signal = es.GetWirelessSignalStatus();
+            int headsetStatus = es.GetHeadsetOn();
             if (es.GetTimeFromStart() > 5 && signal != EdkDll.EE_SignalStrength_t.NO_SIGNAL)
             {
                 engine.HeadsetGetGyroDelta(userID, out x, out y);
                 es.GetBatteryChargeLevel(out curr, out max);
                 Console.WriteLine("X: "+ x.ToString() + " Y: "+ y.ToString() +"");
-                coordinator.headsetStatus(curr, max, x, y, 1);
+                //coordinator.headsetStatus(curr, max, x, y, 1);
             }
             else if (signal == EdkDll.EE_SignalStrength_t.NO_SIGNAL)
             {
-                int headsetStatus = es.GetHeadsetOn();
-                coordinator.headsetStatus(curr, max, x, y, 1);
+                
             }
+            coordinator.headsetStatus(curr, max, x, y, headsetStatus);
         }
 
         private void engine_CognitivEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)

@@ -48,6 +48,8 @@
             this.chbCalibration = new System.Windows.Forms.CheckBox();
             this.trbrCalibration = new System.Windows.Forms.TrackBar();
             this.pbHeadsetBattery = new System.Windows.Forms.ProgressBar();
+            this.lbBattery = new System.Windows.Forms.Label();
+            this.rbGyro = new System.Windows.Forms.RadioButton();
             this.grpEmo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -106,6 +108,7 @@
             // 
             // grpEmo
             // 
+            this.grpEmo.Controls.Add(this.lbBattery);
             this.grpEmo.Controls.Add(this.pbHeadsetBattery);
             this.grpEmo.Controls.Add(this.lbHeadsetStatus);
             this.grpEmo.Controls.Add(this.button1);
@@ -131,6 +134,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rbGyro);
             this.groupBox1.Controls.Add(this.radioExp);
             this.groupBox1.Controls.Add(this.radioKeyboard);
             this.groupBox1.Controls.Add(this.radioCog);
@@ -270,11 +274,31 @@
             // 
             // pbHeadsetBattery
             // 
-            this.pbHeadsetBattery.Location = new System.Drawing.Point(87, 47);
+            this.pbHeadsetBattery.Location = new System.Drawing.Point(59, 45);
             this.pbHeadsetBattery.Name = "pbHeadsetBattery";
             this.pbHeadsetBattery.Size = new System.Drawing.Size(100, 23);
             this.pbHeadsetBattery.Step = 5;
             this.pbHeadsetBattery.TabIndex = 6;
+            // 
+            // lbBattery
+            // 
+            this.lbBattery.AutoSize = true;
+            this.lbBattery.Location = new System.Drawing.Point(7, 47);
+            this.lbBattery.Name = "lbBattery";
+            this.lbBattery.Size = new System.Drawing.Size(46, 13);
+            this.lbBattery.TabIndex = 7;
+            this.lbBattery.Text = "Batterie:";
+            // 
+            // rbGyro
+            // 
+            this.rbGyro.AutoSize = true;
+            this.rbGyro.Location = new System.Drawing.Point(87, 42);
+            this.rbGyro.Name = "rbGyro";
+            this.rbGyro.Size = new System.Drawing.Size(70, 17);
+            this.rbGyro.TabIndex = 5;
+            this.rbGyro.TabStop = true;
+            this.rbGyro.Text = "Gyroskop";
+            this.rbGyro.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
@@ -321,6 +345,8 @@
         private System.Windows.Forms.Label lbSpeed;
         private System.Windows.Forms.Button btSleep;
         private System.Windows.Forms.ProgressBar pbHeadsetBattery;
+        private System.Windows.Forms.Label lbBattery;
+        private System.Windows.Forms.RadioButton rbGyro;
 
     }
 }

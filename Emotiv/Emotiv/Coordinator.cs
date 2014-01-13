@@ -119,6 +119,10 @@ namespace Emotiv
                 case "Tastatur":
                     model.setUserControl("key");
                     break;
+                case "Gyroskop":
+                    model.setUserControl("gyro");
+                    // set gyro null
+                    break;
                 case "cali":
                     model.setUserControl("cali");
                     break;
@@ -265,7 +269,25 @@ namespace Emotiv
 
         public void headsetStatus(int currCharge, int maxCharge, int gyroX, int gyroY, int headsetOn)
         {
+            int charge = 0;
+            int maxX = 0;
+            int maxY = 0;
+            if (headsetOn > 0)
+            {
+                model.getGyro(out maxX, out maxY);
+                maxX += gyroX;
+                maxY += gyroY;
+                if (maxCharge > 0)
+                {
+                    charge = (currCharge * 100) / 5;
+                }
+            }
+            model.setEmoUpdate(charge, maxX, maxY);
+        }
 
+        public void setGyroValues(int x, int y)
+        {
+            
         }
 
         public void Dispose()

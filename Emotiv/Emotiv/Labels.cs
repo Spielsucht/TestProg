@@ -7,7 +7,7 @@ namespace Emotiv
 {
     public interface IGetLabels
     {
-        string[] getLabels();
+        void getLabels(out string[] labels, out int[] values);
     }
 
     public interface ISetLabels
@@ -16,6 +16,7 @@ namespace Emotiv
         void emoStatusText(string text);
         void spheroStatusText(string text);
         void spheroSpeedText(string speed);
+        void emoBatteryStatus(int currCharge);
     }
 
     class Labels : IGetLabels, ISetLabels
@@ -25,12 +26,10 @@ namespace Emotiv
         private string spheroStatus;
         private string speed;
         public int currCharge;
-        public int maxCharge;
 
         public Labels()
         {
             currCharge = 0;
-            maxCharge = 0;
         }
 
         public void setDongleStatusText(string text)
@@ -53,9 +52,15 @@ namespace Emotiv
             speed = number;
         }
 
-        public string[] getLabels()
+        public void emoBatteryStatus(int currCharge)
         {
-            return new string[] { dongleStatus, emoStatus, spheroStatus, speed};
+            this.currCharge = currCharge;
+        }
+
+        public void getLabels(out string[] labels, out int[] values)
+        {
+            labels = new string[] { dongleStatus, emoStatus, spheroStatus, speed};
+            values = new int[] { currCharge };
         }
     }
 }

@@ -13,7 +13,9 @@ namespace Emotiv
         void setSpheroConStatus(bool status);
         void setUserControl(string radioButtonName);
         void setSpheroSpeed(string snumber, float fnumber);
+        void setEmoUpdate(int currCharge, int gyroX, int gyroY);
 
+        void getGyro(out int gyroX, out int gyroY);
         bool getSpheroConStatus();
         string getUserControl();
         float getSpeed();
@@ -77,6 +79,20 @@ namespace Emotiv
         public float getSpeed()
         {
             return speed;
+        }
+
+        public void setEmoUpdate(int currCharge, int gyroX, int gyroY)
+        {
+            gyroMaxX = gyroX;
+            gyroMaxY = gyroY;
+            labels.emoBatteryStatus(currCharge);
+            textChange(this);
+        }
+
+        public void getGyro(out int gyroX, out int gyroY)
+        {
+            gyroX = gyroMaxX;
+            gyroY = gyroMaxY;
         }
 
         public void setLabelsClass(ISetLabels slb)
