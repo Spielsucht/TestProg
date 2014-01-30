@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>Emotiv.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Coordinator.cs" />
-    <Compile Include="EmoControl.cs" />
+    <Compile Include="EmoView.cs" />
     <Compile Include="Labels.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>

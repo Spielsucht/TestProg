@@ -44,16 +44,20 @@ namespace Emotiv
             string[] labelStrings;
             int[] values;
             labels.getLabels(out labelStrings, out values);
-            if (!this.IsDisposed)
+            try
             {
                 this.Invoke((MethodInvoker)delegate()
-                {
-                    lbEmoStatus.Text = labelStrings[0];
-                    lbConnection.Text = labelStrings[2];
-                    lbHeadsetStatus.Text = "Headset Status: " + labelStrings[1];
-                    lbSpeed.Text = "Geschw.: " + labelStrings[3] + "%";
-                    pbHeadsetBattery.Value = values[0];
-                }); 
+                    {
+                        lbEmoStatus.Text = labelStrings[0];
+                        lbConnection.Text = labelStrings[2];
+                        lbHeadsetStatus.Text = "Headset Status: " + labelStrings[1];
+                        lbSpeed.Text = "Geschw.: " + labelStrings[3] + "%";
+                        pbHeadsetBattery.Value = values[0];
+                    });
+            }
+            catch (Exception)
+            {
+                
             }
         }
 

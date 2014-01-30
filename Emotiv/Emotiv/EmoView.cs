@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using Emotiv;
 using System.Windows.Forms;
-using System.Threading;
+using System.Timers;
 
 namespace Emotiv
 {
-    class EmoControl
+    class EmoView
     {
         static Profile profile;
-        private bool running = true;
         private EmoEngine engine;
         private uint userID;
         private IController coordinator;
+        private static System.Timers.Timer emoTimer;
+        private static bool Showed { get; set; } 
 
-        public EmoControl(IController coor)
+        public EmoView(IController coor)
         {
             coordinator = coor;
             this.engine = EmoEngine.Instance;
@@ -29,6 +30,15 @@ namespace Emotiv
             engine.EmoStateUpdated += new EmoEngine.EmoStateUpdatedEventHandler(engine_EmoStateUpdated);
             engine.CognitivEmoStateUpdated += new EmoEngine.CognitivEmoStateUpdatedEventHandler(engine_CognitivEmoStateUpdated);
             engine.ExpressivEmoStateUpdated += new EmoEngine.ExpressivEmoStateUpdatedEventHandler(engine_ExpressivEmoStateUpdated);
+
+            engine.Connect();
+
+            emoTimer = new System.Timers.Timer();
+            emoTimer.Interval = 5;
+            emoTimer.Elapsed += new System.Timers.ElapsedEventHandler(onTimedEvent);
+            emoTimer.Enabled = true;
+
+            Showed = false;
         }
 
         public void onLoadProfile(string path)
@@ -52,14 +62,21 @@ namespace Emotiv
         {
             coordinator.setEmoDongleLabel("Dongle aktiv");
             userID = e.userId;
-            profile = EmoEngine.Instance.GetUserProfile(userID); // Creates a new profile
-            profile.GetBytes();
+            if (profile == null)
+            {
+                profile = EmoEngine.Instance.GetUserProfile(userID); // Creates a new profile
+                profile.GetBytes();
+            }
             Console.WriteLine("user added ({0})", e.userId);
+            emoTimer.Interval = 5;
         }
         private void engine_UserRemoved(object sender, EmoEngineEventArgs e)
         {
+            
             coordinator.setEmoDongleLabel("Dongle inaktiv");
             Console.WriteLine("user removed");
+            emoTimer.Interval = 250;
+            engine_EmoStateUpdated(this, new EmoStateUpdatedEventArgs(userID, new EmoState()));
         }
 
         private void engine_EmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
@@ -69,15 +86,27 @@ namespace Emotiv
             EmoState es = e.emoState;
             EdkDll.EE_SignalStrength_t signal = es.GetWirelessSignalStatus();
             int headsetStatus = es.GetHeadsetOn();
-            if (es.GetTimeFromStart() > 5 && signal != EdkDll.EE_SignalStrength_t.NO_SIGNAL)
+            try
             {
-                engine.HeadsetGetGyroDelta(userID, out x, out y);
-                es.GetBatteryChargeLevel(out curr, out max);
-                Console.WriteLine("X: "+ x.ToString() + " Y: "+ y.ToString() +"");
-                //coordinator.headsetStatus(curr, max, x, y, 1);
+                if (es.GetTimeFromStart() > 5 && signal != EdkDll.EE_SignalStrength_t.NO_SIGNAL)
+                {
+                    engine.HeadsetGetGyroDelta(userID, out x, out y);
+                    es.GetBatteryChargeLevel(out curr, out max);
+                    Console.WriteLine("X: " + x.ToString() + " Y: " + y.ToString() + "");
+                }
+                else if (signal == EdkDll.EE_SignalStrength_t.NO_SIGNAL)
+                {
+
+                }
             }
-            else if (signal == EdkDll.EE_SignalStrength_t.NO_SIGNAL)
+            catch (EmoEngineException ex)
             {
+                if (Showed == false)
+                {
+                    Showed = true;
+                    if (System.Windows.Forms.MessageBox.Show(ex.Message, "Fehler beim Emotiv Headset.", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                        Showed = false;
+                }
                 
             }
             coordinator.headsetStatus(curr, max, x, y, headsetStatus);
@@ -89,7 +118,7 @@ namespace Emotiv
             coordinator.cognitivControl(es.CognitivGetCurrentAction());
         }
 
-        void engine_ExpressivEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
+        private void engine_ExpressivEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
         {
             EmoState es = e.emoState;
             coordinator.expressivControl(es.ExpressivGetUpperFaceAction().ToString(),es.ExpressivGetLowerFaceAction().ToString());
@@ -97,21 +126,15 @@ namespace Emotiv
 
         public void stopRunning()
         {
-            this.running = false;
+            emoTimer.Stop();
+            engine.Disconnect();
         }
 
-        public void run()
+        private void onTimedEvent(object source, ElapsedEventArgs e)
         {
-            running = true;
-            engine.Connect();
-            EmoState es = new EmoState();
-            coordinator.setEmoDongleLabel("Dongle inaktiv");
-            while (running)
-            {
-                Thread.Sleep(1); // Lowers the CPU usaged by ~95% (or more)
-                engine.ProcessEvents(1000);
-            }
-            engine.Disconnect();
+            emoTimer.Stop();
+            engine.ProcessEvents();
+            emoTimer.Enabled = true;
         }
     }
 }

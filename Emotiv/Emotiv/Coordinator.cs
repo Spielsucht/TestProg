@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -10,7 +9,6 @@ namespace Emotiv
 {
     public interface IController : IDisposable
     {
-        void startEmoControl();
         void stopEmoControl();
         void connectToSphero();
         void setBackLED(bool state);
@@ -30,49 +28,30 @@ namespace Emotiv
     class Coordinator : IController
     {
         private SpheroModel spheroModel;
-        private EmoControl emoControl;
+        private EmoView emoView;
         private IView window;
         private Model model;
         private Labels labels;
-
-        private BackgroundWorker emoWorker;
 
         public Coordinator(IView mw, Model mo)
         {
             labels = new Labels();
             window = mw;
             model = mo;
-            emoControl = new EmoControl(this);
-            emoWorker = new BackgroundWorker();
+            emoView = new EmoView(this);
             mw.setCoordinatorLabels(this, (IGetLabels)labels);
             model.attach((IObserver)window);
             model.setLabelsClass((ISetLabels) labels);
-            startEmoControl();
-        }
-
-        public void startEmoControl()
-        {
-            if (!emoWorker.IsBusy)
-            {
-                emoWorker.DoWork += new DoWorkEventHandler(emoWorker_DoWork);
-                emoWorker.RunWorkerAsync();
-                Console.WriteLine("Worker working");
-            }
         }
 
         public void stopEmoControl()
         {
-            emoControl.stopRunning();
-        }
-
-        private void emoWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            emoControl.run();
+            emoView.stopRunning();
         }
 
         public void loadEmoProfil(string path)
         {
-            emoControl.onLoadProfile(path);
+            emoView.onLoadProfile(path);
         }
 
         public void setEmoDongleLabel(string status)
@@ -121,7 +100,7 @@ namespace Emotiv
                     break;
                 case "Gyroskop":
                     model.setUserControl("gyro");
-                    // set gyro null
+                    model.setGyro(0, 0);
                     break;
                 case "cali":
                     model.setUserControl("cali");
@@ -281,13 +260,40 @@ namespace Emotiv
                 {
                     charge = (currCharge * 100) / 5;
                 }
-            }
-            model.setEmoUpdate(charge, maxX, maxY);
-        }
 
-        public void setGyroValues(int x, int y)
-        {
-            
+                if (System.Math.Abs(maxX) > System.Math.Abs(maxY))
+                {
+                    if (maxX >= 200)
+                    {
+                        move("gyro", 90);
+                    }
+                    else if (maxX <= -200)
+                    {
+                        move("gyro", 270);
+                    }
+                    else
+                    {
+                        move("gyro", 360);
+                    }
+                }
+                else if (System.Math.Abs(maxX) < System.Math.Abs(maxY))
+                {
+                    if (maxY >= 150)
+                    {
+                        move("gyro", 0);
+                    }
+                    else if (maxY <= -150)
+                    {
+                        move("gyro", 180);
+                    }
+                    else
+                    {
+                        move("gyro", 360);
+                    }
+                }
+            }
+            model.setEmoUpdate(charge);
+            model.setGyro(maxX, maxY);
         }
 
         public void Dispose()
@@ -296,10 +302,7 @@ namespace Emotiv
             {
                 spheroModel.sleep();
             }
-            if (emoWorker.IsBusy)
-            {
-                emoControl.stopRunning();
-            }
+            emoView.stopRunning();
         }
     }
 }
