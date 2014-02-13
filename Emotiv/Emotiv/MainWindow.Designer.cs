@@ -217,7 +217,7 @@
             // lbConnection
             // 
             this.lbConnection.AutoSize = true;
-            this.lbConnection.Location = new System.Drawing.Point(366, 47);
+            this.lbConnection.Location = new System.Drawing.Point(363, 42);
             this.lbConnection.Name = "lbConnection";
             this.lbConnection.Size = new System.Drawing.Size(69, 13);
             this.lbConnection.TabIndex = 1;
@@ -228,7 +228,7 @@
             this.cbDevices.FormattingEnabled = true;
             this.cbDevices.Items.AddRange(new object[] {
             "Sphero"});
-            this.cbDevices.Location = new System.Drawing.Point(366, 19);
+            this.cbDevices.Location = new System.Drawing.Point(366, 15);
             this.cbDevices.Name = "cbDevices";
             this.cbDevices.Size = new System.Drawing.Size(121, 21);
             this.cbDevices.TabIndex = 0;
@@ -244,14 +244,14 @@
             this.groupBox2.Controls.Add(this.trbrCalibration);
             this.groupBox2.Location = new System.Drawing.Point(12, 213);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(493, 167);
+            this.groupBox2.Size = new System.Drawing.Size(493, 124);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sphero";
             // 
             // btSleep
             // 
-            this.btSleep.Location = new System.Drawing.Point(402, 41);
+            this.btSleep.Location = new System.Drawing.Point(402, 91);
             this.btSleep.Name = "btSleep";
             this.btSleep.Size = new System.Drawing.Size(85, 23);
             this.btSleep.TabIndex = 4;
@@ -261,7 +261,7 @@
             // 
             // trbrSpeed
             // 
-            this.trbrSpeed.Location = new System.Drawing.Point(87, 70);
+            this.trbrSpeed.Location = new System.Drawing.Point(87, 69);
             this.trbrSpeed.Name = "trbrSpeed";
             this.trbrSpeed.Size = new System.Drawing.Size(201, 45);
             this.trbrSpeed.TabIndex = 3;
@@ -271,7 +271,7 @@
             // lbSpeed
             // 
             this.lbSpeed.AutoSize = true;
-            this.lbSpeed.Location = new System.Drawing.Point(3, 70);
+            this.lbSpeed.Location = new System.Drawing.Point(7, 69);
             this.lbSpeed.Name = "lbSpeed";
             this.lbSpeed.Size = new System.Drawing.Size(46, 13);
             this.lbSpeed.TabIndex = 2;
@@ -280,7 +280,7 @@
             // chbCalibration
             // 
             this.chbCalibration.AutoSize = true;
-            this.chbCalibration.Location = new System.Drawing.Point(6, 19);
+            this.chbCalibration.Location = new System.Drawing.Point(6, 18);
             this.chbCalibration.Name = "chbCalibration";
             this.chbCalibration.Size = new System.Drawing.Size(81, 17);
             this.chbCalibration.TabIndex = 1;
@@ -290,7 +290,7 @@
             // 
             // trbrCalibration
             // 
-            this.trbrCalibration.Location = new System.Drawing.Point(87, 19);
+            this.trbrCalibration.Location = new System.Drawing.Point(87, 18);
             this.trbrCalibration.Maximum = 365;
             this.trbrCalibration.Name = "trbrCalibration";
             this.trbrCalibration.Size = new System.Drawing.Size(400, 45);
@@ -305,11 +305,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(517, 395);
+            this.ClientSize = new System.Drawing.Size(517, 350);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.grpEmo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "MainWindow";
             this.Text = "Form1";
             this.grpEmo.ResumeLayout(false);
