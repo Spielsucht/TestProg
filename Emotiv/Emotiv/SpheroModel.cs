@@ -11,7 +11,7 @@ namespace Emotiv
 
     class SpheroModel : IModelSetup
     {
-        public event SpheroConnectionFinished<IModelSetup> finished;
+        public event SpheroConnectionFinished<SpheroModel> finished;
         public event ModelTextHandler<SpheroModel> textChange; 
         private SpheroConnector spheroConnector;
         private Sphero sphero = null;
@@ -26,7 +26,7 @@ namespace Emotiv
 
         public void attach(IObserver obs)
         {
-            finished += new SpheroConnectionFinished<IModelSetup>(obs.spheroConnectionResponse);
+            finished += new SpheroConnectionFinished<SpheroModel>(obs.spheroConnectionResponse);
             textChange += new ModelTextHandler<SpheroModel>(obs.textChange);
         }
 
@@ -75,7 +75,6 @@ namespace Emotiv
             if (e.Error == null)
             {
                 labels.spheroStatusText("Connected");
-                finished(this);
             }
             else
             {

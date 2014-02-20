@@ -8,6 +8,8 @@ namespace Emotiv
     public interface IGetLabels
     {
         void getLabels(out string[] labels, out int[] values);
+        string[] getComboboxChosen();
+        string[] getComboboxList();
     }
 
     public interface ISetLabels
@@ -17,6 +19,7 @@ namespace Emotiv
         void spheroStatusText(string text);
         void spheroSpeedText(string speed);
         void emoBatteryStatus(int currCharge);
+        void setChosen(string[] chosen);
     }
 
     class Labels : IGetLabels, ISetLabels
@@ -25,11 +28,16 @@ namespace Emotiv
         private string emoStatus;
         private string spheroStatus;
         private string speed;
-        public int currCharge;
+        private string[] expList;
+        private string[] expChosen;
+        private string[] expNameChosen;
+        private int currCharge;
 
         public Labels()
         {
             currCharge = 0;
+            expChosen = new string[]{ "keine", "keine", "keine", "keine" };
+            expList = new string[] { "keine", "Zwinkern", "Blinzeln (links)", "Blinzeln (rechts)", "Augenbrauen", "Stirn Runzeln", "Lächeln", "Lachen", "Mundwinkel (links)", "Mundwinkel (rechts)" };
         }
 
         public void setDongleStatusText(string text)
@@ -61,6 +69,21 @@ namespace Emotiv
         {
             labels = new string[] { dongleStatus, emoStatus, spheroStatus, speed};
             values = new int[] { currCharge };
+        }
+
+        public string[] getComboboxChosen()
+        {
+            return expChosen;
+        }
+
+        public string[] getComboboxList()
+        {
+            return expList;
+        }
+
+        public void setChosen(string[] chosen)
+        {
+            expChosen = chosen;
         }
     }
 }

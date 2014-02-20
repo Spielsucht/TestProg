@@ -12,7 +12,8 @@ namespace Emotiv
     public interface IObserver
     {
         void textChange(IModelSetup model);
-        void spheroConnectionResponse(IModelSetup s);
+        void spheroConnectionResponse(IModelSetup sender);
+        void comboBoxChange(List<List<string>> lists, string[] chosen);
     }
 
     public interface IView
@@ -24,11 +25,24 @@ namespace Emotiv
     {
         private IController coordinator;
         private IGetLabels labels;
+        private List<ComboBox> comboBoxes;
+        private bool boxChange = true;
 
         public void setCoordinatorLabels(IController coor, IGetLabels gbl)
         {
             coordinator = coor;
             labels = gbl;
+
+            comboBoxes = new List<ComboBox>();
+            comboBoxes.Add(cbForword);
+            comboBoxes.Add(cbBackword);
+            comboBoxes.Add(cbLeft);
+            comboBoxes.Add(cbRight);
+
+            foreach (ComboBox box in comboBoxes)
+            {
+                box.DataSource = labels.getComboboxList();
+            }
         }
 
         public MainWindow()
@@ -61,10 +75,20 @@ namespace Emotiv
             }
         }
 
-        public void spheroConnectionResponse(IModelSetup s)
+        public void spheroConnectionResponse(IModelSetup sender)
         {
             chbCalibration.Enabled = true;
             coordinator.setSpheroStatus(true);
+        }
+
+        public void comboBoxChange(List<List<string>> lists, string[] chosen)
+        {
+            for (int i = 0; i < 4; i++)
+			{
+                comboBoxes[i].DataSource = lists[i];
+                comboBoxes[i].Text = chosen[i];
+			}
+            boxChange = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -153,6 +177,7 @@ namespace Emotiv
                             "Fehler",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
+                cbDevices.Text = null;
             }
         }
 
@@ -183,6 +208,16 @@ namespace Emotiv
         private void radioKeyboard_KeyUp(object sender, KeyEventArgs e)
         {
             coordinator.keyControl('h');
+        }
+
+        private void comboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            ComboBox cbSender = (ComboBox)sender;
+            if (cbSender.Visible && boxChange)
+            {
+                boxChange = false;
+                coordinator.comboboxChange(cbSender, labels.getComboboxChosen(), labels.getComboboxList());
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Emotiv
         void keyControl(char key);
         void caliBall(int heading);
         void headsetStatus(int currCharge, int maxCharge, int gyroX, int gyroY, int headsetOn);
+        void comboboxChange(ComboBox cb, string[] chosen, string[] list);
     }
 
     class Coordinator : IController
@@ -200,7 +201,7 @@ namespace Emotiv
             
         }
 
-        public void expressivControl (string upper, string lower)
+        public void expressivControl (string upper, string lower) // Chosen ist nicht gleich wie mit den action
         {
             int heading = 360;
             string[] lowerAndUpper = { lower, upper };
@@ -210,28 +211,31 @@ namespace Emotiv
             }
             else if (lowerAndUpper.Count(action => action.Contains("EXP_NEUTRAL") == true) == 1)
             {
+                string[] chosen = labels.getComboboxChosen();
                 foreach (string action in lowerAndUpper)
                 {
                     if (action != "EXP_NEUTRAL")
                     {
-                        switch (action)
-                        {
-                            case "EXP_EYEBROW":
-                                heading = 0;
-                                break;
-                            case "EXP_SMILE":
-                                heading = 180;
-                                break;
-                            case "EXP_SMIRK_LEFT":
-                                heading = 270;
-                                break;
-                            case "EXP_SMIRK_RIGHT":
-                                heading = 90;
-                                break;
-                            default:
-                                heading = -1;
-                                break;
-                        } 
+                        if (action == chosen[0])
+	                    {
+		                     heading = 0;
+	                    }
+                        else if (action == chosen[1])
+	                    {
+		                     heading = 180;
+	                    }
+                        else if (action == chosen[2])
+	                    {
+		                     heading = 270;
+	                    }
+                        else if (action == chosen[3])
+	                    {
+		                     heading = 90;
+	                    }
+                        else
+	                    {
+                            heading = -1;
+	                    }
                     }
                 }
             }
@@ -294,6 +298,73 @@ namespace Emotiv
             }
             model.setEmoUpdate(charge);
             model.setGyro(maxX, maxY);
+        }
+
+        public void comboboxChange(ComboBox cb, string[] chosen, string[] list)
+        {
+            string chose = cb.SelectedItem.ToString();
+            string[] chosenExpName = new string[4];
+            switch (cb.Name)
+            {
+                case "cbForword":
+                    chosen[0] = chose;
+                    break;
+                case "cbBackword":
+                    chosen[1] = chose;
+                    break;
+                case "cbLeft":
+                    chosen[2] = chose;
+                    break;
+                case "cbRight":
+                    chosen[3] = chose;
+                    break;
+                default:
+                    break;
+            }
+            List<string> cbForward = createList(0, chosen, list);
+            List<string> cbBachword = createList(1, chosen, list);
+            List<string> cbLeft = createList(2, chosen, list);
+            List<string> cbRight = createList(3, chosen, list);
+
+            for (int i = 0; i < chosen.Length; i++)
+            {
+                switch (chosen[i])
+                {
+                    case "Zwinkern": chosenExpName[i] = "EXP_BLINK"; break;
+                    case "Blinzeln (links)":chosenExpName[i] = "EXP_WINK_LEFT"; break;
+                    case "Blinzeln (rechts)": chosenExpName[i] = "EXP_WINK_RIGHT"; break;
+                    case "Augenbrauen": chosenExpName[i] = "EXP_EYEBROW"; break;
+                    case "Stirn Runzeln": chosenExpName[i] = "EXP_FURROW"; break;
+                    case "Lächeln": chosenExpName[i] = "EXP_SMILE"; break;
+                    case "Lachen": chosenExpName[i] = "EXP_LAUGH"; break;
+                    case "Mundwinkel (links)": chosenExpName[i] = "EXP_SMIRK_LEFT"; break;
+                    case "Mundwinkel (rechts)": chosenExpName[i] = "EXP_SMIRK_RIGHT"; break;
+                    default: chosenExpName[i] = null; break;
+                }
+            }
+
+            model.setComboBoxLists(cbForward, cbBachword, cbLeft, cbRight, chosen, chosenExpName);
+        }
+
+        private List<string> createList(int chosenIndex, string[] chosen, string[] list)
+        {
+            List<string> newlist = new List<string>();
+
+            foreach (var item in list)
+            {
+                if (item != "keine")
+                {
+                    if (!chosen.Contains(item) || item == chosen[chosenIndex])
+                    {
+                        newlist.Add(item);
+                    }
+                }
+                else
+                {
+                    newlist.Add("keine");
+                }
+            }
+            return newlist;
         }
 
         public void Dispose()

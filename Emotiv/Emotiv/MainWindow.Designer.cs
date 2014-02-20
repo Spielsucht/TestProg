@@ -33,7 +33,7 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.tbPofilePath = new System.Windows.Forms.TextBox();
             this.btnOpen = new System.Windows.Forms.Button();
-            this.grpEmo = new System.Windows.Forms.GroupBox();
+            this.gbEmo = new System.Windows.Forms.GroupBox();
             this.lbBattery = new System.Windows.Forms.Label();
             this.pbHeadsetBattery = new System.Windows.Forms.ProgressBar();
             this.lbHeadsetStatus = new System.Windows.Forms.Label();
@@ -44,17 +44,27 @@
             this.radioCog = new System.Windows.Forms.RadioButton();
             this.lbConnection = new System.Windows.Forms.Label();
             this.cbDevices = new System.Windows.Forms.ComboBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gbSphero = new System.Windows.Forms.GroupBox();
             this.btSleep = new System.Windows.Forms.Button();
             this.trbrSpeed = new System.Windows.Forms.TrackBar();
             this.lbSpeed = new System.Windows.Forms.Label();
             this.chbCalibration = new System.Windows.Forms.CheckBox();
             this.trbrCalibration = new System.Windows.Forms.TrackBar();
-            this.grpEmo.SuspendLayout();
+            this.gbExpressiv = new System.Windows.Forms.GroupBox();
+            this.cbRight = new System.Windows.Forms.ComboBox();
+            this.cbLeft = new System.Windows.Forms.ComboBox();
+            this.cbBackword = new System.Windows.Forms.ComboBox();
+            this.cbForword = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.gbEmo.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.gbSphero.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbrSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbrCalibration)).BeginInit();
+            this.gbExpressiv.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbEmoStatus
@@ -106,22 +116,22 @@
             this.btnOpen.Text = "Öffnen";
             this.btnOpen.UseVisualStyleBackColor = true;
             // 
-            // grpEmo
+            // gbEmo
             // 
-            this.grpEmo.Controls.Add(this.lbBattery);
-            this.grpEmo.Controls.Add(this.pbHeadsetBattery);
-            this.grpEmo.Controls.Add(this.lbHeadsetStatus);
-            this.grpEmo.Controls.Add(this.button1);
-            this.grpEmo.Controls.Add(this.tbPofilePath);
-            this.grpEmo.Controls.Add(this.btnOpen);
-            this.grpEmo.Controls.Add(this.lbEmoStatus);
-            this.grpEmo.Controls.Add(this.btnSearch);
-            this.grpEmo.Location = new System.Drawing.Point(12, 12);
-            this.grpEmo.Name = "grpEmo";
-            this.grpEmo.Size = new System.Drawing.Size(493, 122);
-            this.grpEmo.TabIndex = 5;
-            this.grpEmo.TabStop = false;
-            this.grpEmo.Text = "Emotiv Control";
+            this.gbEmo.Controls.Add(this.lbBattery);
+            this.gbEmo.Controls.Add(this.pbHeadsetBattery);
+            this.gbEmo.Controls.Add(this.lbHeadsetStatus);
+            this.gbEmo.Controls.Add(this.button1);
+            this.gbEmo.Controls.Add(this.tbPofilePath);
+            this.gbEmo.Controls.Add(this.btnOpen);
+            this.gbEmo.Controls.Add(this.lbEmoStatus);
+            this.gbEmo.Controls.Add(this.btnSearch);
+            this.gbEmo.Location = new System.Drawing.Point(12, 12);
+            this.gbEmo.Name = "gbEmo";
+            this.gbEmo.Size = new System.Drawing.Size(493, 122);
+            this.gbEmo.TabIndex = 5;
+            this.gbEmo.TabStop = false;
+            this.gbEmo.Text = "Emotiv Control";
             // 
             // lbBattery
             // 
@@ -159,7 +169,7 @@
             this.groupBox1.Controls.Add(this.cbDevices);
             this.groupBox1.Location = new System.Drawing.Point(12, 141);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(493, 66);
+            this.groupBox1.Size = new System.Drawing.Size(493, 56);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
@@ -167,7 +177,7 @@
             // rbGyro
             // 
             this.rbGyro.AutoSize = true;
-            this.rbGyro.Location = new System.Drawing.Point(87, 42);
+            this.rbGyro.Location = new System.Drawing.Point(145, 19);
             this.rbGyro.Name = "rbGyro";
             this.rbGyro.Size = new System.Drawing.Size(70, 17);
             this.rbGyro.TabIndex = 5;
@@ -191,7 +201,7 @@
             // radioKeyboard
             // 
             this.radioKeyboard.AutoSize = true;
-            this.radioKeyboard.Location = new System.Drawing.Point(6, 42);
+            this.radioKeyboard.Location = new System.Drawing.Point(224, 19);
             this.radioKeyboard.Name = "radioKeyboard";
             this.radioKeyboard.Size = new System.Drawing.Size(64, 17);
             this.radioKeyboard.TabIndex = 3;
@@ -217,7 +227,7 @@
             // lbConnection
             // 
             this.lbConnection.AutoSize = true;
-            this.lbConnection.Location = new System.Drawing.Point(363, 42);
+            this.lbConnection.Location = new System.Drawing.Point(418, 39);
             this.lbConnection.Name = "lbConnection";
             this.lbConnection.Size = new System.Drawing.Size(69, 13);
             this.lbConnection.TabIndex = 1;
@@ -225,6 +235,7 @@
             // 
             // cbDevices
             // 
+            this.cbDevices.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDevices.FormattingEnabled = true;
             this.cbDevices.Items.AddRange(new object[] {
             "Sphero"});
@@ -232,26 +243,25 @@
             this.cbDevices.Name = "cbDevices";
             this.cbDevices.Size = new System.Drawing.Size(121, 21);
             this.cbDevices.TabIndex = 0;
-            this.cbDevices.Text = "keine";
             this.cbDevices.SelectedIndexChanged += new System.EventHandler(this.cbDevices_SelectedIndexChanged);
             // 
-            // groupBox2
+            // gbSphero
             // 
-            this.groupBox2.Controls.Add(this.btSleep);
-            this.groupBox2.Controls.Add(this.trbrSpeed);
-            this.groupBox2.Controls.Add(this.lbSpeed);
-            this.groupBox2.Controls.Add(this.chbCalibration);
-            this.groupBox2.Controls.Add(this.trbrCalibration);
-            this.groupBox2.Location = new System.Drawing.Point(12, 213);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(493, 124);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Sphero";
+            this.gbSphero.Controls.Add(this.btSleep);
+            this.gbSphero.Controls.Add(this.trbrSpeed);
+            this.gbSphero.Controls.Add(this.lbSpeed);
+            this.gbSphero.Controls.Add(this.chbCalibration);
+            this.gbSphero.Controls.Add(this.trbrCalibration);
+            this.gbSphero.Location = new System.Drawing.Point(12, 296);
+            this.gbSphero.Name = "gbSphero";
+            this.gbSphero.Size = new System.Drawing.Size(493, 91);
+            this.gbSphero.TabIndex = 7;
+            this.gbSphero.TabStop = false;
+            this.gbSphero.Text = "Sphero";
             // 
             // btSleep
             // 
-            this.btSleep.Location = new System.Drawing.Point(402, 91);
+            this.btSleep.Location = new System.Drawing.Point(402, 50);
             this.btSleep.Name = "btSleep";
             this.btSleep.Size = new System.Drawing.Size(85, 23);
             this.btSleep.TabIndex = 4;
@@ -261,7 +271,7 @@
             // 
             // trbrSpeed
             // 
-            this.trbrSpeed.Location = new System.Drawing.Point(87, 69);
+            this.trbrSpeed.Location = new System.Drawing.Point(87, 50);
             this.trbrSpeed.Name = "trbrSpeed";
             this.trbrSpeed.Size = new System.Drawing.Size(201, 45);
             this.trbrSpeed.TabIndex = 3;
@@ -271,7 +281,7 @@
             // lbSpeed
             // 
             this.lbSpeed.AutoSize = true;
-            this.lbSpeed.Location = new System.Drawing.Point(7, 69);
+            this.lbSpeed.Location = new System.Drawing.Point(7, 50);
             this.lbSpeed.Name = "lbSpeed";
             this.lbSpeed.Size = new System.Drawing.Size(46, 13);
             this.lbSpeed.TabIndex = 2;
@@ -280,7 +290,7 @@
             // chbCalibration
             // 
             this.chbCalibration.AutoSize = true;
-            this.chbCalibration.Location = new System.Drawing.Point(6, 18);
+            this.chbCalibration.Location = new System.Drawing.Point(6, 19);
             this.chbCalibration.Name = "chbCalibration";
             this.chbCalibration.Size = new System.Drawing.Size(81, 17);
             this.chbCalibration.TabIndex = 1;
@@ -301,26 +311,122 @@
             this.trbrCalibration.Value = 180;
             this.trbrCalibration.Scroll += new System.EventHandler(this.trbrCalibration_Scroll);
             // 
+            // gbExpressiv
+            // 
+            this.gbExpressiv.Controls.Add(this.cbRight);
+            this.gbExpressiv.Controls.Add(this.cbLeft);
+            this.gbExpressiv.Controls.Add(this.cbBackword);
+            this.gbExpressiv.Controls.Add(this.cbForword);
+            this.gbExpressiv.Controls.Add(this.label4);
+            this.gbExpressiv.Controls.Add(this.label3);
+            this.gbExpressiv.Controls.Add(this.label2);
+            this.gbExpressiv.Controls.Add(this.label1);
+            this.gbExpressiv.Location = new System.Drawing.Point(12, 204);
+            this.gbExpressiv.Name = "gbExpressiv";
+            this.gbExpressiv.Size = new System.Drawing.Size(493, 86);
+            this.gbExpressiv.TabIndex = 8;
+            this.gbExpressiv.TabStop = false;
+            this.gbExpressiv.Text = "Mimik Optionen";
+            // 
+            // cbRight
+            // 
+            this.cbRight.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRight.FormattingEnabled = true;
+            this.cbRight.Location = new System.Drawing.Point(322, 50);
+            this.cbRight.Name = "cbRight";
+            this.cbRight.Size = new System.Drawing.Size(121, 21);
+            this.cbRight.TabIndex = 7;
+            this.cbRight.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
+            // 
+            // cbLeft
+            // 
+            this.cbLeft.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLeft.FormattingEnabled = true;
+            this.cbLeft.Location = new System.Drawing.Point(322, 17);
+            this.cbLeft.Name = "cbLeft";
+            this.cbLeft.Size = new System.Drawing.Size(121, 21);
+            this.cbLeft.TabIndex = 6;
+            this.cbLeft.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
+            // 
+            // cbBackword
+            // 
+            this.cbBackword.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbBackword.FormattingEnabled = true;
+            this.cbBackword.Location = new System.Drawing.Point(74, 50);
+            this.cbBackword.Name = "cbBackword";
+            this.cbBackword.Size = new System.Drawing.Size(121, 21);
+            this.cbBackword.TabIndex = 5;
+            this.cbBackword.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
+            // 
+            // cbForword
+            // 
+            this.cbForword.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbForword.FormattingEnabled = true;
+            this.cbForword.Location = new System.Drawing.Point(74, 17);
+            this.cbForword.Name = "cbForword";
+            this.cbForword.Size = new System.Drawing.Size(121, 21);
+            this.cbForword.TabIndex = 4;
+            this.cbForword.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(275, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Rechts";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(275, 20);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(32, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Links";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(10, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Rückwärts";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(48, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Vorwärts";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(517, 350);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(518, 399);
+            this.Controls.Add(this.gbExpressiv);
+            this.Controls.Add(this.gbSphero);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.grpEmo);
+            this.Controls.Add(this.gbEmo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "MainWindow";
             this.Text = "Form1";
-            this.grpEmo.ResumeLayout(false);
-            this.grpEmo.PerformLayout();
+            this.gbEmo.ResumeLayout(false);
+            this.gbEmo.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.gbSphero.ResumeLayout(false);
+            this.gbSphero.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbrSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trbrCalibration)).EndInit();
+            this.gbExpressiv.ResumeLayout(false);
+            this.gbExpressiv.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -332,9 +438,9 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox tbPofilePath;
         private System.Windows.Forms.Button btnOpen;
-        private System.Windows.Forms.GroupBox grpEmo;
+        private System.Windows.Forms.GroupBox gbEmo;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gbSphero;
         private System.Windows.Forms.CheckBox chbCalibration;
         private System.Windows.Forms.TrackBar trbrCalibration;
         private System.Windows.Forms.Label lbConnection;
@@ -349,6 +455,15 @@
         private System.Windows.Forms.ProgressBar pbHeadsetBattery;
         private System.Windows.Forms.Label lbBattery;
         private System.Windows.Forms.RadioButton rbGyro;
+        private System.Windows.Forms.GroupBox gbExpressiv;
+        private System.Windows.Forms.ComboBox cbRight;
+        private System.Windows.Forms.ComboBox cbLeft;
+        private System.Windows.Forms.ComboBox cbBackword;
+        private System.Windows.Forms.ComboBox cbForword;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
 
     }
 }

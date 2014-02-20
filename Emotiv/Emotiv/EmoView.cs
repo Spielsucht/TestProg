@@ -64,15 +64,15 @@ namespace Emotiv
             userID = e.userId;
             if (profile == null)
             {
-                profile = EmoEngine.Instance.GetUserProfile(userID); // Creates a new profile
+                profile = EmoEngine.Instance.GetUserProfile(userID);
                 profile.GetBytes();
             }
             Console.WriteLine("user added ({0})", e.userId);
             emoTimer.Interval = 5;
         }
+
         private void engine_UserRemoved(object sender, EmoEngineEventArgs e)
         {
-            
             coordinator.setEmoDongleLabel("Dongle inaktiv");
             Console.WriteLine("user removed");
             emoTimer.Interval = 250;
@@ -96,7 +96,12 @@ namespace Emotiv
                 }
                 else if (signal == EdkDll.EE_SignalStrength_t.NO_SIGNAL)
                 {
-
+                    if (Showed == false)
+                    {
+                        Showed = true;
+                        if (System.Windows.Forms.MessageBox.Show("Fehler","Es besteht keine Verbidnung mehr zu dem Headset.", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                            Showed = false;
+                    }
                 }
             }
             catch (EmoEngineException ex)
@@ -126,8 +131,11 @@ namespace Emotiv
 
         public void stopRunning()
         {
-            emoTimer.Stop();
-            engine.Disconnect();
+            if (emoTimer.Enabled)
+            {
+                emoTimer.Stop();
+                engine.Disconnect();
+            }
         }
 
         private void onTimedEvent(object source, ElapsedEventArgs e)

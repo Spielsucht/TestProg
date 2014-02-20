@@ -6,6 +6,7 @@ using System.Text;
 namespace Emotiv
 {
     public delegate void ModelTextHandler<IModelSetup>(IModelSetup sender);
+    public delegate void ComboBoxChange<IModelSetup>(List<List<string>> lists, string[] chosen);
 
     public interface IModel
     {
@@ -20,6 +21,8 @@ namespace Emotiv
         bool getSpheroConStatus();
         string getUserControl();
         float getSpeed();
+        void setComboBoxLists(List<string> listForword, List<string> listBackword, List<string> listLeft, List<string> listRight, string[] chosen, string[] chosenExpName);
+        string[] getChosenExp();
     }
 
     public interface IModelSetup
@@ -36,12 +39,15 @@ namespace Emotiv
         private float speed;
         private int gyroMaxX;
         private int gyroMaxY;
+        private string[] expChosenName;
 
         public event ModelTextHandler<Model> textChange;
+        public event ComboBoxChange<Model> comboBoxChange;
 
         public Model()
         {
             spheroConnectStatus = false;
+            expChosenName = new string[4];
         }
 
         public void setEmoDongleLabel(string status)
@@ -105,9 +111,22 @@ namespace Emotiv
             labels = slb;
         }
 
+        public void setComboBoxLists(List<string> listForword, List<string> listBackword, List<string> listLeft, List<string> listRight, string[] chosen, string[] chosenExpName)
+        {
+            labels.setChosen(chosen);
+            expChosenName = chosenExpName;
+            comboBoxChange(new List<List<string>> {listForword, listBackword, listLeft, listRight}, chosen);
+        }
+
+        public string[] getChosenExp()
+        {
+            return expChosenName;
+        }
+
         public void attach(IObserver obs)
         {
             textChange += new ModelTextHandler<Model>(obs.textChange);
+            comboBoxChange += new ComboBoxChange<Model>(obs.comboBoxChange);
         }
     }
 }
