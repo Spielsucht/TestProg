@@ -11,13 +11,13 @@ namespace Emotiv
     {
         void stopEmoControl();
         void connectToSphero();
-        void setBackLED(bool state);
         void loadEmoProfil(string path);
         void setHeading(UInt16 heading);
         void setEmoDongleLabel(string status);
         void setSpheroStatus(bool status);
         void setUserControl(string radioButtonName);
         void setSpeed(int value);
+        void setBackLED(bool state);
         void expressivControl(string upper, string lower);
         void cognitivControl(EdkDll.EE_CognitivAction_t action);
         void keyControl(char key);
@@ -68,6 +68,10 @@ namespace Emotiv
                 spheroModel.attach((IObserver)window);
                 spheroModel.setLabelsClass((ISetLabels)labels);
                 spheroModel.connectToBall();
+            }
+            else
+            {
+                //spheroModel.connectToBall();
             }
         }
 
@@ -125,7 +129,22 @@ namespace Emotiv
                 {
                     speed = model.getSpeed();
                 }
-                spheroModel.moveBall(speed, iHeading);
+
+                UInt16 heading = 0;
+                if (iHeading <= 180)
+                {
+                    heading = (UInt16)(180 - iHeading);
+                }
+                else if (iHeading > 180 && iHeading < 360)
+                {
+                    heading = (UInt16)(359 + 180 - iHeading);
+                }
+                else
+                {
+                    heading = model.lastHeading;
+                }
+                model.lastHeading = heading;
+                spheroModel.moveBall(speed, heading);
             }
         }
 
@@ -201,7 +220,7 @@ namespace Emotiv
             
         }
 
-        public void expressivControl (string upper, string lower) // Chosen ist nicht gleich wie mit den action
+        public void expressivControl (string upper, string lower)
         {
             int heading = 360;
             string[] lowerAndUpper = { lower, upper };
@@ -211,7 +230,7 @@ namespace Emotiv
             }
             else if (lowerAndUpper.Count(action => action.Contains("EXP_NEUTRAL") == true) == 1)
             {
-                string[] chosen = labels.getComboboxChosen();
+                string[] chosen = model.getChosenExp();
                 foreach (string action in lowerAndUpper)
                 {
                     if (action != "EXP_NEUTRAL")

@@ -10,7 +10,7 @@ namespace Emotiv
 {
     class EmoView
     {
-        static Profile profile;
+        private static Profile profile;
         private EmoEngine engine;
         private uint userID;
         private IController coordinator;

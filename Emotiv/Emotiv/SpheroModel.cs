@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace Emotiv
 {
-    public delegate void SpheroConnectionFinished<IModelSetup>(IModelSetup sender);
+    public delegate void SpheroConnectionFinished<IModelSetup>(IModelSetup sender, bool status);
 
     class SpheroModel : IModelSetup
     {
@@ -17,11 +17,14 @@ namespace Emotiv
         private Sphero sphero = null;
         private BackgroundWorker connectSpheroWorker;
         private ISetLabels labels;
-        private UInt16 lastHeading;
 
         public SpheroModel()
         {
             spheroConnector = new SpheroConnector();
+
+            connectSpheroWorker = new BackgroundWorker();
+            connectSpheroWorker.DoWork += new DoWorkEventHandler(connectSpheroWorker_DoWork);
+            connectSpheroWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(connectSpheroWorker_RunWorkerCompleted);
         }
 
         public void attach(IObserver obs)
@@ -39,14 +42,14 @@ namespace Emotiv
         {
             if (sphero == null)
             {
-                connectSpheroWorker = new BackgroundWorker();
-                connectSpheroWorker.DoWork += new DoWorkEventHandler(connectSpheroWorker_DoWork);
-                connectSpheroWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(connectSpheroWorker_RunWorkerCompleted);
                 connectSpheroWorker.RunWorkerAsync();
             }
             else
             {
-                
+                spheroConnector.Close();
+                sphero = null;
+                finished(this, false);
+                connectToBall();
             }
         }
 
@@ -72,9 +75,10 @@ namespace Emotiv
 
         private void connectSpheroWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Error == null)
+            if (e.Error == null && sphero != null)
             {
                 labels.spheroStatusText("Connected");
+                finished(this, true);
             }
             else
             {
@@ -118,23 +122,8 @@ namespace Emotiv
             sphero.SetHeading(heading);
         }
 
-        public void moveBall(float speed, int iHeading)
+        public void moveBall(float speed, UInt16 heading)
         {
-            UInt16 heading = 0;
-
-            if (iHeading <= 180)
-            {
-                heading = (UInt16)(180 - iHeading); 
-            }
-            else if (iHeading > 180 && iHeading < 360)
-            {
-                heading = (UInt16)(359 + 180 - iHeading);
-            }
-            else 
-            {
-                heading = lastHeading;
-            }
-            lastHeading = heading;
             sphero.PerformMove(heading, speed);
         }
 

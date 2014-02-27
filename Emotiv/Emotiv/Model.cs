@@ -23,6 +23,7 @@ namespace Emotiv
         float getSpeed();
         void setComboBoxLists(List<string> listForword, List<string> listBackword, List<string> listLeft, List<string> listRight, string[] chosen, string[] chosenExpName);
         string[] getChosenExp();
+        UInt16 lastHeading { get; set; }
     }
 
     public interface IModelSetup
@@ -40,6 +41,7 @@ namespace Emotiv
         private int gyroMaxX;
         private int gyroMaxY;
         private string[] expChosenName;
+        private UInt16 _lastHeading;
 
         public event ModelTextHandler<Model> textChange;
         public event ComboBoxChange<Model> comboBoxChange;
@@ -104,6 +106,12 @@ namespace Emotiv
         {
             gyroX = gyroMaxX;
             gyroY = gyroMaxY;
+        }
+
+        public UInt16 lastHeading
+        {
+            get { return _lastHeading; }
+            set { _lastHeading = value; }
         }
 
         public void setLabelsClass(ISetLabels slb)

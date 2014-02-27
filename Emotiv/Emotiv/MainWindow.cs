@@ -12,7 +12,7 @@ namespace Emotiv
     public interface IObserver
     {
         void textChange(IModelSetup model);
-        void spheroConnectionResponse(IModelSetup sender);
+        void spheroConnectionResponse(IModelSetup sender, bool status);
         void comboBoxChange(List<List<string>> lists, string[] chosen);
     }
 
@@ -75,10 +75,10 @@ namespace Emotiv
             }
         }
 
-        public void spheroConnectionResponse(IModelSetup sender)
+        public void spheroConnectionResponse(IModelSetup sender, bool status)
         {
-            chbCalibration.Enabled = true;
-            coordinator.setSpheroStatus(true);
+            chbCalibration.Enabled = status;
+            coordinator.setSpheroStatus(status);
         }
 
         public void comboBoxChange(List<List<string>> lists, string[] chosen)
@@ -218,6 +218,11 @@ namespace Emotiv
                 boxChange = false;
                 coordinator.comboboxChange(cbSender, labels.getComboboxChosen(), labels.getComboboxList());
             }
+        }
+
+        private void btGyroRes_Click(object sender, EventArgs e)
+        {
+            coordinator.setUserControl("Gyroskop");
         }
     }
 }

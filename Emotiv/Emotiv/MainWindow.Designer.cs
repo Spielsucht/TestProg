@@ -59,6 +59,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.btGyroRes = new System.Windows.Forms.Button();
             this.gbEmo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbSphero.SuspendLayout();
@@ -172,7 +173,7 @@
             this.groupBox1.Size = new System.Drawing.Size(493, 56);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.groupBox1.Text = "Wahl der Steuerung";
             // 
             // rbGyro
             // 
@@ -227,7 +228,7 @@
             // lbConnection
             // 
             this.lbConnection.AutoSize = true;
-            this.lbConnection.Location = new System.Drawing.Point(418, 39);
+            this.lbConnection.Location = new System.Drawing.Point(363, 39);
             this.lbConnection.Name = "lbConnection";
             this.lbConnection.Size = new System.Drawing.Size(69, 13);
             this.lbConnection.TabIndex = 1;
@@ -247,6 +248,7 @@
             // 
             // gbSphero
             // 
+            this.gbSphero.Controls.Add(this.btGyroRes);
             this.gbSphero.Controls.Add(this.btSleep);
             this.gbSphero.Controls.Add(this.trbrSpeed);
             this.gbSphero.Controls.Add(this.lbSpeed);
@@ -404,6 +406,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Vorwärts";
             // 
+            // btGyroRes
+            // 
+            this.btGyroRes.Location = new System.Drawing.Point(294, 50);
+            this.btGyroRes.Name = "btGyroRes";
+            this.btGyroRes.Size = new System.Drawing.Size(75, 23);
+            this.btGyroRes.TabIndex = 6;
+            this.btGyroRes.Text = "Gyro Reset";
+            this.btGyroRes.UseVisualStyleBackColor = true;
+            this.btGyroRes.Click += new System.EventHandler(this.btGyroRes_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -416,7 +428,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "BCI Device Control";
             this.gbEmo.ResumeLayout(false);
             this.gbEmo.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -464,6 +476,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btGyroRes;
 
     }
 }
