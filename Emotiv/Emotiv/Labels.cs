@@ -30,7 +30,6 @@ namespace Emotiv
         private string speed;
         private string[] expList;
         private string[] expChosen;
-        private string[] expNameChosen;
         private int currCharge;
 
         public Labels()

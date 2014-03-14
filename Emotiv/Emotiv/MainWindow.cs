@@ -91,7 +91,7 @@ namespace Emotiv
             boxChange = true;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btEmoDisconnect_Click(object sender, EventArgs e)
         {
             coordinator.stopEmoControl();
         }
@@ -194,18 +194,18 @@ namespace Emotiv
         private void RadioButtons_Checked(object sender, EventArgs e)
         {
             var RadioButton = groupBox1.Controls.OfType<RadioButton>().SingleOrDefault(rb => rb.Checked == true) as RadioButton;
-            if (RadioButton != null)
+            if (RadioButton != null && !chbCalibration.Checked)
             {
                 coordinator.setUserControl(RadioButton.Text);
             }
         }
 
-        private void MainWindow_KeyPress(object sender, KeyPressEventArgs e)
+        private void Window_KeyPress(object sender, KeyPressEventArgs e)
         {
             coordinator.keyControl(e.KeyChar);
         }
 
-        private void radioKeyboard_KeyUp(object sender, KeyEventArgs e)
+        private void Window_KeyUp(object sender, KeyEventArgs e)
         {
             coordinator.keyControl('h');
         }

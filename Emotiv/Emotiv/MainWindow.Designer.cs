@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.lbEmoStatus = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btEmoDisconnect = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.tbPofilePath = new System.Windows.Forms.TextBox();
             this.btnOpen = new System.Windows.Forms.Button();
@@ -45,6 +45,7 @@
             this.lbConnection = new System.Windows.Forms.Label();
             this.cbDevices = new System.Windows.Forms.ComboBox();
             this.gbSphero = new System.Windows.Forms.GroupBox();
+            this.btGyroRes = new System.Windows.Forms.Button();
             this.btSleep = new System.Windows.Forms.Button();
             this.trbrSpeed = new System.Windows.Forms.TrackBar();
             this.lbSpeed = new System.Windows.Forms.Label();
@@ -59,7 +60,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btGyroRes = new System.Windows.Forms.Button();
             this.gbEmo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbSphero.SuspendLayout();
@@ -79,15 +79,15 @@
             this.lbEmoStatus.TabIndex = 0;
             this.lbEmoStatus.Text = "lbEmoStatus";
             // 
-            // button1
+            // btEmoDisconnect
             // 
-            this.button1.Location = new System.Drawing.Point(412, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Disconnect";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btEmoDisconnect.Location = new System.Drawing.Point(412, 19);
+            this.btEmoDisconnect.Name = "btEmoDisconnect";
+            this.btEmoDisconnect.Size = new System.Drawing.Size(75, 23);
+            this.btEmoDisconnect.TabIndex = 1;
+            this.btEmoDisconnect.Text = "Disconnect";
+            this.btEmoDisconnect.UseVisualStyleBackColor = true;
+            this.btEmoDisconnect.Click += new System.EventHandler(this.btEmoDisconnect_Click);
             // 
             // btnSearch
             // 
@@ -110,19 +110,20 @@
             // btnOpen
             // 
             this.btnOpen.Enabled = false;
-            this.btnOpen.Location = new System.Drawing.Point(6, 74);
+            this.btnOpen.Location = new System.Drawing.Point(6, 76);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 4;
             this.btnOpen.Text = "Öffnen";
             this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.Visible = false;
             // 
             // gbEmo
             // 
             this.gbEmo.Controls.Add(this.lbBattery);
             this.gbEmo.Controls.Add(this.pbHeadsetBattery);
             this.gbEmo.Controls.Add(this.lbHeadsetStatus);
-            this.gbEmo.Controls.Add(this.button1);
+            this.gbEmo.Controls.Add(this.btEmoDisconnect);
             this.gbEmo.Controls.Add(this.tbPofilePath);
             this.gbEmo.Controls.Add(this.btnOpen);
             this.gbEmo.Controls.Add(this.lbEmoStatus);
@@ -148,7 +149,7 @@
             this.pbHeadsetBattery.Location = new System.Drawing.Point(59, 45);
             this.pbHeadsetBattery.Name = "pbHeadsetBattery";
             this.pbHeadsetBattery.Size = new System.Drawing.Size(100, 23);
-            this.pbHeadsetBattery.Step = 5;
+            this.pbHeadsetBattery.Step = 4;
             this.pbHeadsetBattery.TabIndex = 6;
             // 
             // lbHeadsetStatus
@@ -210,8 +211,8 @@
             this.radioKeyboard.Text = "Tastatur";
             this.radioKeyboard.UseVisualStyleBackColor = true;
             this.radioKeyboard.Click += new System.EventHandler(this.RadioButtons_Checked);
-            this.radioKeyboard.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainWindow_KeyPress);
-            this.radioKeyboard.KeyUp += new System.Windows.Forms.KeyEventHandler(this.radioKeyboard_KeyUp);
+            this.radioKeyboard.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Window_KeyPress);
+            this.radioKeyboard.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Window_KeyUp);
             // 
             // radioCog
             // 
@@ -256,10 +257,20 @@
             this.gbSphero.Controls.Add(this.trbrCalibration);
             this.gbSphero.Location = new System.Drawing.Point(12, 296);
             this.gbSphero.Name = "gbSphero";
-            this.gbSphero.Size = new System.Drawing.Size(493, 91);
+            this.gbSphero.Size = new System.Drawing.Size(493, 100);
             this.gbSphero.TabIndex = 7;
             this.gbSphero.TabStop = false;
             this.gbSphero.Text = "Sphero";
+            // 
+            // btGyroRes
+            // 
+            this.btGyroRes.Location = new System.Drawing.Point(294, 50);
+            this.btGyroRes.Name = "btGyroRes";
+            this.btGyroRes.Size = new System.Drawing.Size(75, 23);
+            this.btGyroRes.TabIndex = 6;
+            this.btGyroRes.Text = "Gyro Reset";
+            this.btGyroRes.UseVisualStyleBackColor = true;
+            this.btGyroRes.Click += new System.EventHandler(this.btGyroRes_Click);
             // 
             // btSleep
             // 
@@ -406,21 +417,11 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Vorwärts";
             // 
-            // btGyroRes
-            // 
-            this.btGyroRes.Location = new System.Drawing.Point(294, 50);
-            this.btGyroRes.Name = "btGyroRes";
-            this.btGyroRes.Size = new System.Drawing.Size(75, 23);
-            this.btGyroRes.TabIndex = 6;
-            this.btGyroRes.Text = "Gyro Reset";
-            this.btGyroRes.UseVisualStyleBackColor = true;
-            this.btGyroRes.Click += new System.EventHandler(this.btGyroRes_Click);
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(518, 399);
+            this.ClientSize = new System.Drawing.Size(518, 408);
             this.Controls.Add(this.gbExpressiv);
             this.Controls.Add(this.gbSphero);
             this.Controls.Add(this.groupBox1);
@@ -429,6 +430,8 @@
             this.MaximizeBox = false;
             this.Name = "MainWindow";
             this.Text = "BCI Device Control";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Window_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Window_KeyUp);
             this.gbEmo.ResumeLayout(false);
             this.gbEmo.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -446,7 +449,7 @@
         #endregion
 
         private System.Windows.Forms.Label lbEmoStatus;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btEmoDisconnect;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox tbPofilePath;
         private System.Windows.Forms.Button btnOpen;

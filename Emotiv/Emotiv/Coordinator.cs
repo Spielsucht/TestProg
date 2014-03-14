@@ -279,7 +279,7 @@ namespace Emotiv
                 model.getGyro(out maxX, out maxY);
                 maxX += gyroX;
                 maxY += gyroY;
-                if (maxCharge > 0)
+                if (maxCharge > 0 && currCharge >=0)
                 {
                     charge = (currCharge * 100) / 5;
                 }

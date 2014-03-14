@@ -94,12 +94,12 @@ namespace Emotiv
                     es.GetBatteryChargeLevel(out curr, out max);
                     Console.WriteLine("X: " + x.ToString() + " Y: " + y.ToString() + "");
                 }
-                else if (signal == EdkDll.EE_SignalStrength_t.NO_SIGNAL)
+                else if (/*signal == EdkDll.EE_SignalStrength_t.NO_SIGNAL && */headsetStatus != 1)
                 {
                     if (Showed == false)
                     {
                         Showed = true;
-                        if (System.Windows.Forms.MessageBox.Show("Fehler","Es besteht keine Verbidnung mehr zu dem Headset.", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
+                        if (System.Windows.Forms.MessageBox.Show("Es besteht keine Verbidnung mehr zu dem Headset.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK)
                             Showed = false;
                     }
                 }
